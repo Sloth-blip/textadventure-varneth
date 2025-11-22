@@ -1,6 +1,6 @@
 package systems.rooms;
 
-import systems.actors.interactables.PointofInterestState;
+import systems.interactables.PointofInterestState;
 import ui.ConsoleMenu;
 
 import java.util.ArrayList;

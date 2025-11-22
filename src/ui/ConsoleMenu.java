@@ -1,11 +1,12 @@
 package ui;
 
-import engine.player.PlayerState;
+
 import input.TextInput;
-import systems.actors.enemy.EnemyState;
-import systems.actors.interactables.PointofInterestState;
+import systems.actors.enemy.Enemy;
+import systems.actors.player.Player;
+import systems.interactables.PointofInterestState;
 import systems.rooms.RoomState;
-import systems.spells.KnownSpell;
+import systems.spells.Skill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -236,35 +237,35 @@ public class ConsoleMenu {
 
     /** Combat Menu **/
 
-    public void consoleMenuCombatSceneBegin(PlayerState player, List<EnemyState> enemies) {
+    public void consoleMenuCombatSceneBegin(Player player, List<Enemy> enemies) {
         System.out.println("""
                 %s %d/%d
                 vs""".formatted(
-                player, player.getHealthPointsCurrent(), player.getHealthPointsMax()
+                player.getName(), player.getCurrentHp(), player.getMaxHp()
                 ));
-        for (EnemyState enemy : enemies) {
+        for (Enemy enemy : enemies) {
             if (!enemy.isDead()) {
                 System.out.println("""
                         %s %d/%d""".formatted(
-                        enemy, enemy.getHealthPointsCurrent(), enemy.getHealthPointsMax()
+                        enemy.getName(), enemy.getCurrentHp(), enemy.getMaxHp()
                 ));
             }
         }
     }
 
-    public void consoleMenuCombatSceneState(PlayerState player, List<EnemyState> enemies) {
-        System.out.println(player + " " + player.getHealthPointsCurrent() + "/" + player.getHealthPointsMax());
-        for (EnemyState enemy : enemies) {
+    public void consoleMenuCombatSceneState(Player player, List<Enemy> enemies) {
+        System.out.println(player.getName() + " " + player.getCurrentHp() + "/" + player.getMaxHp());
+        for (Enemy enemy : enemies) {
             if(!enemy.isDead()) {
-                System.out.println(enemy + " " + enemy.getHealthPointsCurrent() + "/" + enemy.getHealthPointsMax());
+                System.out.println(enemy.getName() + " " + enemy.getCurrentHp() + "/" + enemy.getMaxHp());
             }
         }
     }
 
-    public Optional<EnemyState> consoleMenuTargetChooser(List<EnemyState> enemies) {
+    public Optional<Enemy> consoleMenuTargetChooser(List<Enemy> enemies) {
 
-        List<EnemyState> verifiedEnemies = new ArrayList<>();
-        for (EnemyState enemy : enemies) {
+        List<Enemy> verifiedEnemies = new ArrayList<>();
+        for (Enemy enemy : enemies) {
             if (!enemy.isDead()){
             verifiedEnemies.add(enemy);
             }
@@ -278,8 +279,8 @@ public class ConsoleMenu {
 
         int menuListNr = 1;
         System.out.println("Wähle das Ziel aus.");
-        for (EnemyState enemy : verifiedEnemies) {
-            System.out.println(menuListNr + ".: " + enemy);
+        for (Enemy enemy : verifiedEnemies) {
+            System.out.println(menuListNr + ".: " + enemy.getName());
             menuListNr += 1;
             }
 
@@ -294,22 +295,22 @@ public class ConsoleMenu {
         return Optional.of(verifiedEnemies.get(selection - 1));
     }
 
-    public Optional<KnownSpell> consoleMenuSpellChooser(List<KnownSpell> knownSpells){
+    public Optional<Skill> consoleMenuSpellChooser(List<Skill> knownSkills){
         int menuOption = 1;
         System.out.println("Wähle den Zauber:");
-        for(KnownSpell spell : knownSpells){
-            System.out.println(menuOption + ".: " + spell);
+        for(Skill spell : knownSkills){
+            System.out.println(menuOption + ".: " + spell.getName());
             menuOption++;
         }
 
         System.out.println(menuOption + ".: Zurück");
 
-        int selection = ti.inputVerifier(knownSpells.size() + 1);
+        int selection = ti.inputVerifier(knownSkills.size() + 1);
 
         if (menuOption == selection){
             return Optional.empty();
         }
-        return Optional.of(knownSpells.get(selection-1));
+        return Optional.of(knownSkills.get(selection-1));
     }
 
     public CombatAction consoleMenuCombatMenu(){

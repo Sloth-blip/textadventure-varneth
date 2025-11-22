@@ -1,10 +1,5 @@
 package systems.rooms;
 
-import systems.actors.enemy.EnemyState;
-import systems.actors.enemy.EnemyTemplate;
-import systems.actors.interactables.PointofInterestState;
-import systems.actors.npc.NPCState;
-
 import java.util.List;
 
 public class RoomTemplate {

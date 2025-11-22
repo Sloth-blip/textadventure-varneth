@@ -1,4 +1,4 @@
-package systems.actors.interactables;
+package systems.interactables;
 
 import engine.Reward;
 

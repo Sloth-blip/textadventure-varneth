@@ -1,7 +1,8 @@
 package engine;
 
 
-import engine.player.PlayerState;
+
+import systems.actors.player.Player;
 import systems.combat.CombatScene;
 import systems.rooms.ExplorationPhase;
 import systems.rooms.RoomState;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class GameLoop {
 
 
-    public void gameLoopStart(PlayerState player) {
+    public void gameLoopStart(Player player) {
 
         ui.ConsoleMenu userInterface = new ui.ConsoleMenu();
 

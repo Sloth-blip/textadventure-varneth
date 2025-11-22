@@ -1,8 +1,8 @@
 package systems.rooms;
 
-import systems.actors.enemy.EnemyState;
-import systems.actors.interactables.PointofInterestState;
-import systems.actors.npc.NPCState;
+import systems.actors.enemy.Enemy;
+import systems.interactables.PointofInterestState;
+import systems.actors.npc.NPC;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ public class RoomState {
     private final String roomName;
     private final String roomDescription;
     private final List<String> roomDialogChunks;
-    private List<EnemyState> enemies;
-    private List<NPCState> npcs;
+    private List<Enemy> enemies;
+    private List<NPC> npcs;
     private final List<PointofInterestState> interactables;
 
     private List<RoomState> connectedRooms;
@@ -42,13 +42,13 @@ public class RoomState {
     /** Getter **/
     public String getRoomDescription(){return this.roomDescription;}
     public List<String> getRoomDialogChunks(){return this.roomDialogChunks;}
-    public List<EnemyState> getEnemies(){return this.enemies;}
+    public List<Enemy> getEnemies(){return this.enemies;}
     public List<PointofInterestState> getInteractables(){return this.interactables;}
 
     public List<RoomState> getConnectedRooms(){return connectedRooms;}
 
     /** Setter **/
-    public void setEnemies(List<EnemyState> enemies){this.enemies = enemies;}
+    public void setEnemies(List<Enemy> enemies){this.enemies = enemies;}
 
     public void setConnectedRooms(List<RoomState> connectedRooms) {this.connectedRooms = connectedRooms;}
 

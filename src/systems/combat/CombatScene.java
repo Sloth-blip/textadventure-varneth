@@ -1,8 +1,10 @@
 package systems.combat;
 
-import engine.player.PlayerState;
-import systems.actors.enemy.EnemyState;
-import systems.spells.KnownSpell;
+
+import systems.actors.enemy.Enemy;
+
+import systems.actors.player.Player;
+import systems.spells.Skill;
 import ui.ConsoleMenu;
 
 import java.util.List;
@@ -16,7 +18,7 @@ public class CombatScene {
         FLED;
     }
 
-    public CombatResult combatLoop(PlayerState player, List<EnemyState> enemies){
+    public CombatResult combatLoop(Player player, List<Enemy> enemies){
 
         ui.ConsoleMenu CMenu = new ConsoleMenu();
         CMenu.consoleMenuCombatSceneBegin(player, enemies);
@@ -29,42 +31,40 @@ public class CombatScene {
 
             switch (cAction){
                 case BASICATTACK -> {
-                    Optional<EnemyState> maybeTarget = CMenu.consoleMenuTargetChooser(enemies);
+                    Optional<Enemy> maybeTarget = CMenu.consoleMenuTargetChooser(enemies);
                     if (maybeTarget.isEmpty()){
                         continue;
                     }
 
-                    EnemyState target = maybeTarget.get();
-                    int dmg = player.defaultAttack();
-                    System.out.println(target + " hat " + dmg + " Schaden erhalten!");
+                    Enemy target = maybeTarget.get();
+                    int dmg = player.basicAttack();
+                    System.out.println(target.getName() + " hat " + dmg + " Schaden erhalten!");
                     target.recieveDamage(dmg);
                     if(target.isDead()){
-                        System.out.println(target + " besiegt! " + target.getXpReward() + " Erfahrung gewonnen.");
-                        player.gainExperiencePoints(target.getXpReward());
+                        System.out.println(target.getName() + " besiegt! ");
                     }
-                    if (enemies.stream().allMatch(EnemyState::isDead)){
+                    if (enemies.stream().allMatch(Enemy::isDead)){
                         return CombatResult.WON;
                     }
                 }
                 case SPELL -> {
-                    Optional<KnownSpell> maybeSpell = CMenu.consoleMenuSpellChooser(player.getKnownSpells());
+                    Optional<Skill> maybeSpell = CMenu.consoleMenuSpellChooser(player.getLearnedSkills());
                     if (maybeSpell.isEmpty()){
                         continue;
                     }
-                    KnownSpell spell = maybeSpell.get();
-                    Optional<EnemyState> maybeTarget = CMenu.consoleMenuTargetChooser(enemies);
+                    Skill spell = maybeSpell.get();
+                    Optional<Enemy> maybeTarget = CMenu.consoleMenuTargetChooser(enemies);
                     if (maybeTarget.isEmpty()){
                         continue;
                     }
-                    EnemyState target = maybeTarget.get();
-                    int dmg = spell.damageSpell(player);
-                    System.out.println(spell + " von " + player + " hat " + dmg + " Schaden an " + target + " verursacht!");
+                    Enemy target = maybeTarget.get();
+                    int dmg = player.calculateDamageDealtWithSkill(spell);
+                    System.out.println(spell.getName() + " von " + player.getName() + " hat " + dmg + " Schaden an " + target.getName() + " verursacht!");
                     target.recieveDamage(dmg);
                     if(target.isDead()){
-                        System.out.println(target + " besiegt! " + target.getXpReward() + " Erfahrung gewonnen.");
-                        player.gainExperiencePoints(target.getXpReward());
+                        System.out.println(target.getName() + " besiegt! ");
                     }
-                    if (enemies.stream().allMatch(EnemyState::isDead)){
+                    if (enemies.stream().allMatch(Enemy::isDead)){
                         return CombatResult.WON;
                     }
                 }
@@ -79,10 +79,10 @@ public class CombatScene {
 
 
             CMenu.consoleMenuCombatSceneState(player, enemies);
-            for (EnemyState enemy : enemies) {
+            for (Enemy enemy : enemies) {
                 if(!enemy.isDead()) {
-                    int dmg = enemy.defaultAttack();
-                    System.out.println(enemy + " hat " + dmg + " " + player + " Schaden zugefügt!");
+                    int dmg = enemy.basicAttack();
+                    System.out.println(enemy.getName() + " hat " + dmg + " " + player.getName() + " Schaden zugefügt!");
                     player.recieveDamage(dmg);
 
                     if (player.isDead()) {

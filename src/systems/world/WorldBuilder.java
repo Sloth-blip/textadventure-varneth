@@ -1,8 +1,8 @@
 package systems.world;
 
-import systems.actors.enemy.EnemyState;
+import systems.actors.enemy.Enemy;
 import systems.actors.enemy.EnemyTemplates;
-import systems.actors.interactables.PointofInterestState;
+import systems.interactables.PointofInterestState;
 import systems.rooms.RoomState;
 
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ public class WorldBuilder {
 
         /** Enemies **/
 
-        var bat1 = new EnemyState(EnemyTemplates.get("bat"));
-        var slime = new EnemyState(EnemyTemplates.get("slime"));
+        var bat1 = EnemyTemplates.get("Fledermaus");
+        var slime = EnemyTemplates.get("Schleim");
 
         /** Räume (Instanz - Interactable einsetzen - Gegner platzieren) **/
 
