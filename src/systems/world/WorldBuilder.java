@@ -1,9 +1,12 @@
 package systems.world;
 
-import systems.actors.enemy.Enemy;
 import systems.actors.enemy.EnemyTemplates;
-import systems.interactables.PointofInterestState;
+import systems.interactables.PointOfInterest;
+import systems.interactables.PointOfInterestDefinition;
+import systems.interactables.PointOfInterestState;
+import systems.reward.Reward;
 import systems.rooms.RoomState;
+import systems.spells.SpellTemplates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +17,40 @@ public class WorldBuilder {
 
         /** Interactables **/
 
-        var book1 = new PointofInterestState(
-                "Buch",
-                List.of("Very book", "much knowledge", "wow"),
-                true);
-        var cabinet1 = new PointofInterestState(
-                "Schrank",
-                List.of("Du schwingst die Schranktüren mit Wucht auf", "Mit einem lauten Krachen bricht der Schrank in sich zusammen."),
-                false
+        var book1 = new PointOfInterest(
+                new PointOfInterestDefinition(
+                        "book",
+                        "Buch",
+                        List.of(
+                                List.of(
+                                        "Very book",
+                                        "much knowledge",
+                                        "wow"
+                                ),
+                                List.of(
+                                        "Still very booky"
+                                )
+                        ),
+                        new Reward(SpellTemplates.get("pebbles"),0,0)
+
+                ),
+                new PointOfInterestState(true)
+        );
+        var cabinet1 = new PointOfInterest(
+                new PointOfInterestDefinition(
+                        "cabinet",
+                        "Schrank",
+                        List.of(
+                                List.of(
+                                        "Ikea Schrank",
+                                        "Bricht beim ersten Anblick in sich zusammen."
+                                ),
+                                List.of()
+                        ),
+                        new Reward(null,100,0)
+
+                ),
+                new PointOfInterestState(false)
         );
 
         /** Enemies **/
@@ -39,17 +68,17 @@ public class WorldBuilder {
                 new ArrayList<>(List.of(book1, cabinet1))
         );
 
-        room1.setEnemies(new ArrayList<>(List.of(bat1, slime)));
+        room1.setEnemies(new ArrayList<>(List.of()));
 
         var room2 = new RoomState(
                 2,
                 "Weiter",
                 "Der zweite Raum",
-                List.of("Hier geht es weiter.", "Du kannst nur zurück."),
+                List.of("Hier geht es weiter.", "Du musst erst die Gegner besiegen."),
                 List.of()
         );
 
-        room2.setEnemies(new ArrayList<>(List.of()));
+        room2.setEnemies(new ArrayList<>(List.of(bat1,slime)));
 
         /** Räume verbinden **/
 

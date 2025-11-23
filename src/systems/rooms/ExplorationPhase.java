@@ -1,6 +1,9 @@
 package systems.rooms;
 
-import systems.interactables.PointofInterestState;
+import systems.actors.player.Player;
+import systems.interactables.PointOfInterest;
+import systems.interactables.PointOfInterestState;
+import systems.reward.RewardHandler;
 import ui.ConsoleMenu;
 
 import java.util.ArrayList;
@@ -8,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class ExplorationPhase {
+
+    RewardHandler rewardHandler = new RewardHandler();
 
     // Flag für besuchte Räume
     List<RoomState> roomsVisited = new ArrayList<>();
@@ -34,15 +39,16 @@ public class ExplorationPhase {
         cM.consoleMenuDisplayRoomDialog(roomDialog);
     }
 
-    public void playInteractableDialog(RoomState room){
+    public void playInteractableDialog(RoomState room, Player player){
 
-        Optional<PointofInterestState> maybePOI = cM.consoleMenuDisplayAndChooseInteractables(room);
-        if (!maybePOI.isEmpty()) {
+        Optional<PointOfInterest> maybePOI = cM.consoleMenuDisplayAndChooseInteractables(room);
+        if (maybePOI.isPresent()) {
 
-            PointofInterestState pOI = maybePOI.get();
+            PointOfInterest pOI = maybePOI.get();
             cM.consoleMenuDisplayInteractableDialog(
-                    pOI.getInteractableDialogChunks()
+                    pOI.getDialogChunks()
             );
+            rewardHandler.grantRewardsFromPOI(pOI, player);
             room.removeOrFlagInteractable(pOI);
         }
     }

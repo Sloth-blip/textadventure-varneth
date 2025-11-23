@@ -35,8 +35,6 @@ public class ActorState {
     public int getLevel() {return level;}
     public int getCurrentXp() {return currentXp;}
     public List<Skill> getLearnedSkills() {return learnedSkills;}
-    //For Testing
-    public Skill getLearnedSkill() {return this.learnedSkills.getFirst();}
 
     /** Setter **/
 

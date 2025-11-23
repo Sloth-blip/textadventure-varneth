@@ -1,6 +1,6 @@
 package systems.actors;
 
-public class ActorDefintiton {
+public class ActorDefinition {
 
     private final String name;
     private final int baseHp;
@@ -18,7 +18,7 @@ public class ActorDefintiton {
     private final MainAttribute mainAttribute;
 
 
-    public ActorDefintiton(
+    public ActorDefinition(
             String name,
             int baseHp,
             int hpPerLevel,

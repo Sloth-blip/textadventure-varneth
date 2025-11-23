@@ -2,9 +2,12 @@ package ui;
 
 
 import input.TextInput;
+import systems.actors.Actor;
 import systems.actors.enemy.Enemy;
 import systems.actors.player.Player;
-import systems.interactables.PointofInterestState;
+import systems.interactables.PointOfInterest;
+import systems.interactables.PointOfInterestState;
+import systems.reward.Reward;
 import systems.rooms.RoomState;
 import systems.spells.Skill;
 
@@ -190,13 +193,13 @@ public class ConsoleMenu {
 
     /** Interactables **/
 
-    public Optional<PointofInterestState> consoleMenuDisplayAndChooseInteractables(RoomState room) {
+    public Optional<PointOfInterest> consoleMenuDisplayAndChooseInteractables(RoomState room) {
         int menuOption = 1;
 
-        List<PointofInterestState> choice = new ArrayList<>();
+        List<PointOfInterest> choice = new ArrayList<>();
 
-        for (PointofInterestState pOI : room.getInteractables()){
-            System.out.println(menuOption + ".: " + pOI);
+        for (PointOfInterest pOI : room.getInteractables()){
+            System.out.println(menuOption + ".: " + pOI.getName());
             choice.add(pOI);
             menuOption++;
         }
@@ -295,22 +298,22 @@ public class ConsoleMenu {
         return Optional.of(verifiedEnemies.get(selection - 1));
     }
 
-    public Optional<Skill> consoleMenuSpellChooser(List<Skill> knownSkills){
+    public Optional<Skill> consoleMenuSpellChooser(List<Skill> learnedSkills){
         int menuOption = 1;
         System.out.println("Wähle den Zauber:");
-        for(Skill spell : knownSkills){
+        for(Skill spell : learnedSkills){
             System.out.println(menuOption + ".: " + spell.getName());
             menuOption++;
         }
 
         System.out.println(menuOption + ".: Zurück");
 
-        int selection = ti.inputVerifier(knownSkills.size() + 1);
+        int selection = ti.inputVerifier(learnedSkills.size() + 1);
 
         if (menuOption == selection){
             return Optional.empty();
         }
-        return Optional.of(knownSkills.get(selection-1));
+        return Optional.of(learnedSkills.get(selection-1));
     }
 
     public CombatAction consoleMenuCombatMenu(){
@@ -344,6 +347,18 @@ public class ConsoleMenu {
         int selection = ti.inputVerifier(choice.size()) - 1;
         return choice.get(selection);
     }
+
+    /** Reward Handler **/
+
+    public void consoleMessageSkillLearned(Skill skill, Actor actor){
+        System.out.println(actor.getName() + " hat " + skill.getName() + " erlernt!");
+    }
+
+    public void consoleMessageExperienceGranted(int xp, Actor actor){
+        System.out.println(actor.getName() + " hat " + xp + " Erfahrung erhalten!");
+    }
+
+    /** Misc Console Messages **/
 
 }
 

@@ -6,14 +6,14 @@ import systems.spells.Skill;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Actor {
+public abstract class Actor <D extends ActorDefinition> {
 
-    private final ActorDefintiton def;
-    private final ActorState state;
+    protected final D def;
+    protected final ActorState state;
 
 
     protected Actor(
-            ActorDefintiton def,
+            D def,
             ActorState state
     )
     {
@@ -63,8 +63,6 @@ public abstract class Actor {
         return (int) (def.getBaseXpThreshold() * Math.pow(state.getLevel(), def.getXpThresholdExponent()));
     }
 
-    public Skill getLearnedSkill(){return state.getLearnedSkill();}
-
     public List<Skill> getLearnedSkills(){return state.getLearnedSkills();}
 
     public MainAttribute getMainAttribute() {return def.getMainAttribute();}
@@ -91,7 +89,7 @@ public abstract class Actor {
             return skill.getModifier() + getMainAttributeValue();
         }
         else {
-            return skill.getModifier();
+            return skill.getModifier() + getMainAttributeValue()/2;
         }
 
     }
@@ -108,8 +106,13 @@ public abstract class Actor {
         state.setCurrentXp(newXp);
         while (getCurrentXp() >= getCurrentXpThreshold()) {
             state.setCurrentXp(getCurrentXp() - getCurrentXpThreshold());
-            state.levelUp();
+            levelUp();
         }
+    }
+
+    public void levelUp() {
+        state.levelUp();
+        System.out.println(this.getName() + " ist ein Level aufgestiegen und ist nun Level " + this.state.getLevel());
     }
 
     public void takeRest() {

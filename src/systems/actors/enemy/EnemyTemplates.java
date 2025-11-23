@@ -1,6 +1,6 @@
 package systems.actors.enemy;
 
-import systems.actors.ActorDefintiton;
+import systems.reward.Reward;
 import systems.actors.ActorState;
 import systems.actors.MainAttribute;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 public class EnemyTemplates {
 
     private static final Enemy BAT = new Enemy(
-            new ActorDefintiton(
+            new EnemyDefinition(
                     "Fledermaus",
                     15,
                     5,
@@ -25,7 +25,8 @@ public class EnemyTemplates {
                     2,
                     10,
                     10,
-                    MainAttribute.STRENGTH
+                    MainAttribute.STRENGTH,
+                    new Reward(null,500,0)
             ),
             new ActorState(
                     20,
@@ -37,7 +38,7 @@ public class EnemyTemplates {
     );
 
     private static final Enemy SLIME = new Enemy(
-            new ActorDefintiton(
+            new EnemyDefinition(
             "Schleim",
             15,
             5,
@@ -51,7 +52,12 @@ public class EnemyTemplates {
             2,
             10,
             10,
-            MainAttribute.STRENGTH
+            MainAttribute.STRENGTH,
+                    new Reward(
+                            null,
+                            1000,
+                            0
+                    )
     ),
             new ActorState(
                     20,

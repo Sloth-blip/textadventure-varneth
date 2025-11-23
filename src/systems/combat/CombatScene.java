@@ -4,6 +4,7 @@ package systems.combat;
 import systems.actors.enemy.Enemy;
 
 import systems.actors.player.Player;
+import systems.reward.RewardHandler;
 import systems.spells.Skill;
 import ui.ConsoleMenu;
 
@@ -22,6 +23,7 @@ public class CombatScene {
 
         ui.ConsoleMenu CMenu = new ConsoleMenu();
         CMenu.consoleMenuCombatSceneBegin(player, enemies);
+        RewardHandler rewardHandler = new RewardHandler();
 
         while (true){
 
@@ -42,6 +44,8 @@ public class CombatScene {
                     target.recieveDamage(dmg);
                     if(target.isDead()){
                         System.out.println(target.getName() + " besiegt! ");
+                        rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
+
                     }
                     if (enemies.stream().allMatch(Enemy::isDead)){
                         return CombatResult.WON;
@@ -63,6 +67,7 @@ public class CombatScene {
                     target.recieveDamage(dmg);
                     if(target.isDead()){
                         System.out.println(target.getName() + " besiegt! ");
+                        rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
                     }
                     if (enemies.stream().allMatch(Enemy::isDead)){
                         return CombatResult.WON;
@@ -82,7 +87,7 @@ public class CombatScene {
             for (Enemy enemy : enemies) {
                 if(!enemy.isDead()) {
                     int dmg = enemy.basicAttack();
-                    System.out.println(enemy.getName() + " hat " + dmg + " " + player.getName() + " Schaden zugefügt!");
+                    System.out.println(enemy.getName() + " hat " + player.getName() + " " + dmg + " Schaden zugefügt!");
                     player.recieveDamage(dmg);
 
                     if (player.isDead()) {

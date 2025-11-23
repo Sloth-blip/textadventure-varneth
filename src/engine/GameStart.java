@@ -2,18 +2,16 @@ package engine;
 
 
 
-import systems.actors.ActorDefintiton;
+import systems.actors.ActorDefinition;
 import systems.actors.ActorState;
 import systems.actors.MainAttribute;
 import systems.actors.player.Player;
-import systems.spells.Skill;
 import systems.spells.SpellTemplates;
 import ui.ConsoleMenu;
 import ui.ConsoleMenu.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class GameStart {
 
@@ -32,7 +30,7 @@ public class GameStart {
                     System.out.println("Starte...");
                     var gameloop = new GameLoop();
                     Player player = new Player(
-                            new ActorDefintiton(
+                            new ActorDefinition(
                                     "Arenn",
                                     40,
                                     10,
@@ -44,7 +42,7 @@ public class GameStart {
                                     5,
                                     10,
                                     1,
-                                    100,
+                                    10,
                                     2,
                                     MainAttribute.INTELLIGENCE
                             ),
@@ -56,7 +54,6 @@ public class GameStart {
                                     new ArrayList<>(List.of())
                             )
                     );
-                    player.addLearnedSkill(SpellTemplates.get("pebbles"));
                     gameloop.gameLoopStart(player);
                 }
                 case LOAD -> {

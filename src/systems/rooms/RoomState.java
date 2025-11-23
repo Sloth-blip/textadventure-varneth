@@ -1,7 +1,7 @@
 package systems.rooms;
 
 import systems.actors.enemy.Enemy;
-import systems.interactables.PointofInterestState;
+import systems.interactables.PointOfInterest;
 import systems.actors.npc.NPC;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class RoomState {
     private final List<String> roomDialogChunks;
     private List<Enemy> enemies;
     private List<NPC> npcs;
-    private final List<PointofInterestState> interactables;
+    private final List<PointOfInterest> interactables;
 
     private List<RoomState> connectedRooms;
 
@@ -30,7 +30,7 @@ public class RoomState {
             String roomName,
             String roomDescription,
             List<String> roomDialogChunks,
-            List<PointofInterestState> interactables)
+            List<PointOfInterest> interactables)
     {
         this.roomId = roomId;
         this.roomName = roomName;
@@ -43,7 +43,7 @@ public class RoomState {
     public String getRoomDescription(){return this.roomDescription;}
     public List<String> getRoomDialogChunks(){return this.roomDialogChunks;}
     public List<Enemy> getEnemies(){return this.enemies;}
-    public List<PointofInterestState> getInteractables(){return this.interactables;}
+    public List<PointOfInterest> getInteractables(){return this.interactables;}
 
     public List<RoomState> getConnectedRooms(){return connectedRooms;}
 
@@ -53,8 +53,8 @@ public class RoomState {
     public void setConnectedRooms(List<RoomState> connectedRooms) {this.connectedRooms = connectedRooms;}
 
     /** Helper **/
-    public void removeOrFlagInteractable(PointofInterestState pOI){
-        pOI.setInteractableUsed();
+    public void removeOrFlagInteractable(PointOfInterest pOI){
+        pOI.setPOIUsed();
         if(!pOI.isPersistent()){
             this.interactables.remove(pOI);
         }

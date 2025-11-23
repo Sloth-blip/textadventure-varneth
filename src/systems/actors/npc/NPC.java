@@ -1,12 +1,12 @@
 package systems.actors.npc;
 
 import systems.actors.Actor;
-import systems.actors.ActorDefintiton;
+import systems.actors.ActorDefinition;
 import systems.actors.ActorState;
 
 public class NPC extends Actor {
 
-    protected NPC(ActorDefintiton def, ActorState state) {
+    protected NPC(ActorDefinition def, ActorState state) {
         super(def, state);
     }
 

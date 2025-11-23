@@ -1,12 +1,12 @@
 package systems.actors.player;
 
 import systems.actors.Actor;
-import systems.actors.ActorDefintiton;
+import systems.actors.ActorDefinition;
 import systems.actors.ActorState;
 
 public class Player extends Actor {
 
-    public Player(ActorDefintiton def, ActorState state) {
+    public Player(ActorDefinition def, ActorState state) {
         super(def, state);
     }
 

@@ -50,7 +50,7 @@ public class GameLoop {
                         case FLED -> System.out.println("Kampf entflohen!");
                     }
                 }
-                case INTERACTABLES -> eP.playInteractableDialog(currentRoom);
+                case INTERACTABLES -> eP.playInteractableDialog(currentRoom, player);
                 case ROOMDESCRIPTION -> eP.replayRoomDialog(currentRoom.getRoomDialogChunks());
                 case ROOMNAVIGATION -> {
                     Optional<RoomState> maybeNextRoom = eP.chooseNextRoom(currentRoom);
