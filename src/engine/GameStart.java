@@ -6,9 +6,8 @@ import systems.actors.ActorDefinition;
 import systems.actors.ActorState;
 import systems.actors.MainAttribute;
 import systems.actors.player.Player;
-import systems.spells.SpellTemplates;
-import ui.ConsoleMenu;
-import ui.ConsoleMenu.*;
+import ui.consolemenus.ConsoleMenuGeneral;
+import ui.enums.GameStartAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +15,14 @@ import java.util.List;
 public class GameStart {
 
 
-    static ConsoleMenu consoleMenu = new ConsoleMenu();
+    static ConsoleMenuGeneral consoleMenuGeneral = new ConsoleMenuGeneral();
 
     public void gameStartStart(){
 
 
 
         while (true){
-            GameStartAction choice = consoleMenu.consoleMenuGameStart();
+            GameStartAction choice = consoleMenuGeneral.consoleMenuGameStart();
             System.out.println(choice + " gewählt.");
             switch (choice){
                 case NEWGAME -> {

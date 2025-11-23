@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class TextInput {
 
-    public Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
 
     public int inputVerifier(int range) {
         while (true) {

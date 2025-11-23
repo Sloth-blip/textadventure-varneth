@@ -52,11 +52,29 @@ public class WorldBuilder {
                 ),
                 new PointOfInterestState(false)
         );
-
+        var restingPlace = new PointOfInterest(
+                new PointOfInterestDefinition(
+                        "resting Place",
+                        "Rastplatz",
+                        List.of(
+                                List.of(
+                                        "Ein Platz zum Rasten.",
+                                        "Sleep tite booboo."
+                                ),
+                                List.of(
+                                        "Ein Platz zum Rasten.",
+                                        "Sleep tite booboo."
+                                )
+                        ),
+                        new Reward(null,0,0)
+                ),
+                new PointOfInterestState(true)
+        );
         /** Enemies **/
 
         var bat1 = EnemyTemplates.get("Fledermaus");
         var slime = EnemyTemplates.get("Schleim");
+        var bat2 = EnemyTemplates.get("Fledermaus");
 
         /** Räume (Instanz - Interactable einsetzen - Gegner platzieren) **/
 
@@ -65,7 +83,7 @@ public class WorldBuilder {
                 "Beginn",
                 "Der erste Raum",
                 List.of("Spielintro.", "Blablabla", "Bla.", "Bla?", "Bla!"),
-                new ArrayList<>(List.of(book1, cabinet1))
+                new ArrayList<>(List.of(book1, cabinet1, restingPlace))
         );
 
         room1.setEnemies(new ArrayList<>(List.of()));
@@ -80,12 +98,23 @@ public class WorldBuilder {
 
         room2.setEnemies(new ArrayList<>(List.of(bat1,slime)));
 
+        var room3 = new RoomState(
+                3,
+                "Noch Weiter",
+                "Der dritte Raum",
+                List.of(),
+                new ArrayList<>(List.of(restingPlace))
+        );
+
+        room3.setEnemies(new ArrayList<>(List.of(bat2)));
+
         /** Räume verbinden **/
 
         room1.setConnectedRooms(new ArrayList<>(List.of(room2)));
-        room2.setConnectedRooms(new ArrayList<>(List.of(room1)));
+        room2.setConnectedRooms(new ArrayList<>(List.of(room1, room3)));
+        room3.setConnectedRooms(new ArrayList<>(List.of(room2)));
 
-        return new WorldState(room1, List.of(room1,room2));
+        return new WorldState(room1, List.of(room1,room2, room3));
     }
 
 

@@ -2,12 +2,14 @@ package systems.rooms;
 
 import systems.actors.player.Player;
 import systems.interactables.PointOfInterest;
-import systems.interactables.PointOfInterestState;
 import systems.reward.RewardHandler;
-import ui.ConsoleMenu;
+import ui.consolemenus.ConsoleMenuGeneral;
+import ui.consolemenus.ExplorationConsoleMenu;
+import ui.enums.ExplorationAction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ExplorationPhase {
@@ -17,37 +19,42 @@ public class ExplorationPhase {
     // Flag für besuchte Räume
     List<RoomState> roomsVisited = new ArrayList<>();
 
-    ui.ConsoleMenu cM = new ConsoleMenu();
+    ExplorationConsoleMenu explorationConsoleMenu = new ExplorationConsoleMenu();
 
-    public ConsoleMenu.ExplorationAction explorationPhase(RoomState room) {
+    public ExplorationAction explorationPhase(RoomState room) {
 
             System.out.println(room.getRoomDescription());
 
         if(!roomsVisited.contains(room)){
-            cM.consoleMenuDisplayRoomDialog(room.getRoomDialogChunks());
+            explorationConsoleMenu.consoleMenuDisplayRoomDialog(room.getRoomDialogChunks());
             roomsVisited.add(room);
         }
-        cM.consoleMenuExplorationEntered(room);
-        return cM.consoleMenuExplorationOptionChooser(room);
+
+        explorationConsoleMenu.consoleMenuExplorationEntered(room);
+        return explorationConsoleMenu.consoleMenuExplorationOptionChooser(room);
     }
 
     public Optional<RoomState> chooseNextRoom(RoomState currentRoom){
-        return cM.consoleMenuDisplayAndChooseConnectedRooms(currentRoom.getConnectedRooms());
+        return explorationConsoleMenu.consoleMenuDisplayAndChooseConnectedRooms(currentRoom.getConnectedRooms());
     }
 
     public void replayRoomDialog(List<String> roomDialog){
-        cM.consoleMenuDisplayRoomDialog(roomDialog);
+        explorationConsoleMenu.consoleMenuDisplayRoomDialog(roomDialog);
     }
 
     public void playInteractableDialog(RoomState room, Player player){
 
-        Optional<PointOfInterest> maybePOI = cM.consoleMenuDisplayAndChooseInteractables(room);
+        Optional<PointOfInterest> maybePOI = explorationConsoleMenu.consoleMenuDisplayAndChooseInteractables(room);
         if (maybePOI.isPresent()) {
 
             PointOfInterest pOI = maybePOI.get();
-            cM.consoleMenuDisplayInteractableDialog(
+            explorationConsoleMenu.consoleMenuDisplayInteractableDialog(
                     pOI.getDialogChunks()
             );
+            if (Objects.equals(maybePOI.get().getName(), "Rastplatz")){
+                player.takeRest();
+                explorationConsoleMenu.explorationMenuTakeRest(player);
+            }
             rewardHandler.grantRewardsFromPOI(pOI, player);
             room.removeOrFlagInteractable(pOI);
         }

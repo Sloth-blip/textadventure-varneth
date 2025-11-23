@@ -8,7 +8,10 @@ import systems.rooms.ExplorationPhase;
 import systems.rooms.RoomState;
 import systems.world.WorldBuilder;
 
-import ui.ConsoleMenu;
+
+import ui.consolemenus.ConsoleMenuGeneral;
+import ui.enums.ExplorationAction;
+import ui.enums.MainMenuAction;
 
 
 import java.util.List;
@@ -19,7 +22,7 @@ public class GameLoop {
 
     public void gameLoopStart(Player player) {
 
-        ui.ConsoleMenu userInterface = new ui.ConsoleMenu();
+        ConsoleMenuGeneral userInterface = new ConsoleMenuGeneral();
 
 
         var cS = new CombatScene();
@@ -33,7 +36,7 @@ public class GameLoop {
         while (running) {
 
 
-            ConsoleMenu.ExplorationAction nextStep = eP.explorationPhase(currentRoom);
+            ExplorationAction nextStep = eP.explorationPhase(currentRoom);
 
             switch (nextStep){
                 case COMBAT ->{
@@ -59,7 +62,7 @@ public class GameLoop {
                     }
                 }
                 case MAINMENU -> {
-                    ConsoleMenu.MainMenuAction mainMenuChoice = userInterface.consoleMenuMainMenu();
+                    MainMenuAction mainMenuChoice = userInterface.consoleMenuMainMenu();
                     switch (mainMenuChoice){
                         case CONTINUE -> {}
                         case SAVE, LOAD, SETTINGS -> System.out.println("ToDo");

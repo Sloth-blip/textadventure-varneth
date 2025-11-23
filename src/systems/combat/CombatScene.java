@@ -6,7 +6,8 @@ import systems.actors.enemy.Enemy;
 import systems.actors.player.Player;
 import systems.reward.RewardHandler;
 import systems.spells.Skill;
-import ui.ConsoleMenu;
+import ui.enums.CombatAction;
+import ui.consolemenus.CombatConsoleMenu;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,19 +22,19 @@ public class CombatScene {
 
     public CombatResult combatLoop(Player player, List<Enemy> enemies){
 
-        ui.ConsoleMenu CMenu = new ConsoleMenu();
-        CMenu.consoleMenuCombatSceneBegin(player, enemies);
+        CombatConsoleMenu combatMenu = new CombatConsoleMenu();
+        combatMenu.consoleMenuCombatSceneBegin(player, enemies);
         RewardHandler rewardHandler = new RewardHandler();
 
         while (true){
 
             /** Player Combat **/
 
-            ConsoleMenu.CombatAction cAction = CMenu.consoleMenuCombatMenu();
+            CombatAction cAction = combatMenu.consoleMenuCombatMenu();
 
             switch (cAction){
                 case BASICATTACK -> {
-                    Optional<Enemy> maybeTarget = CMenu.consoleMenuTargetChooser(enemies);
+                    Optional<Enemy> maybeTarget = combatMenu.consoleMenuTargetChooser(enemies);
                     if (maybeTarget.isEmpty()){
                         continue;
                     }
@@ -52,12 +53,12 @@ public class CombatScene {
                     }
                 }
                 case SPELL -> {
-                    Optional<Skill> maybeSpell = CMenu.consoleMenuSpellChooser(player.getLearnedSkills());
+                    Optional<Skill> maybeSpell = combatMenu.consoleMenuSpellChooser(player.getLearnedSkills());
                     if (maybeSpell.isEmpty()){
                         continue;
                     }
                     Skill spell = maybeSpell.get();
-                    Optional<Enemy> maybeTarget = CMenu.consoleMenuTargetChooser(enemies);
+                    Optional<Enemy> maybeTarget = combatMenu.consoleMenuTargetChooser(enemies);
                     if (maybeTarget.isEmpty()){
                         continue;
                     }
@@ -83,7 +84,7 @@ public class CombatScene {
             /** Enemy Combat **/
 
 
-            CMenu.consoleMenuCombatSceneState(player, enemies);
+            combatMenu.consoleMenuCombatSceneState(player, enemies);
             for (Enemy enemy : enemies) {
                 if(!enemy.isDead()) {
                     int dmg = enemy.basicAttack();

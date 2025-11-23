@@ -4,7 +4,7 @@ import systems.actors.Actor;
 import systems.actors.ActorDefinition;
 import systems.actors.ActorState;
 
-public class Player extends Actor {
+public class Player extends Actor<ActorDefinition> {
 
     public Player(ActorDefinition def, ActorState state) {
         super(def, state);

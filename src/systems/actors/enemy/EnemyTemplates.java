@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class EnemyTemplates {
 
-    private static final Enemy BAT = new Enemy(
+    private static final EnemyDefinition BAT =
             new EnemyDefinition(
                     "Fledermaus",
                     15,
@@ -26,18 +26,14 @@ public class EnemyTemplates {
                     10,
                     10,
                     MainAttribute.STRENGTH,
-                    new Reward(null,500,0)
-            ),
-            new ActorState(
-                    20,
-                    5,
-                    1,
-                    0,
-                    new ArrayList<>(List.of())
-            )
-    );
+                    new Reward(
+                            null,
+                            500,
+                            0
+                    )
+            );
 
-    private static final Enemy SLIME = new Enemy(
+    private static final EnemyDefinition SLIME =
             new EnemyDefinition(
             "Schleim",
             15,
@@ -58,22 +54,26 @@ public class EnemyTemplates {
                             1000,
                             0
                     )
-    ),
-            new ActorState(
-                    20,
-                            5,
-                            1,
-                            0,
-                            new ArrayList<>(List.of())
-            )
-    );
+            );
 
-    private static final Map<String, Enemy> BY_ID = Map.of(
+
+
+    private static final Map<String, EnemyDefinition> BY_ID = Map.of(
             "Fledermaus", BAT,
             "Schleim", SLIME
     );
 
     public static Enemy get(String id){
-        return BY_ID.get(id);
+        EnemyDefinition def = BY_ID.get(id);
+        return new Enemy(
+                def,
+                new ActorState(
+                        def.getBaseHp() + def.getHpPerLevel() * 1,
+                        def.getBaseResource() + def.getResourcePerLevel() * 1,
+                        1,
+                        0,
+                        new ArrayList<>(List.of())
+                )
+        );
     }
 }
