@@ -30,19 +30,19 @@ public class ActorState {
 
     /** Getter **/
 
-    public int getCurrentHp() {return currentHp;}
-    public int getCurrentResource() {return currentResource;}
-    public int getLevel() {return level;}
-    public int getCurrentXp() {return currentXp;}
-    public List<Skill> getLearnedSkills() {return learnedSkills;}
+    protected int getCurrentHp() {return currentHp;}
+    protected int getCurrentResource() {return currentResource;}
+    protected int getLevel() {return level;}
+    protected int getCurrentXp() {return currentXp;}
+    protected List<Skill> getLearnedSkills() {return learnedSkills;}
 
     /** Setter **/
 
-    public void setCurrentHp(int currentHp) {this.currentHp = currentHp;}
-    public void setCurrentResource(int currentResource) {this.currentResource = currentResource;}
-    public void setLevel(int level) {this.level = level;}
-    public void levelUp() {this.level++;}
-    public void setCurrentXp(int currentXp) {this.currentXp = currentXp;}
-    public void setLearnedSkills(List<Skill> learnedSkills) {this.learnedSkills = learnedSkills;}
-    public void addLearnedSkill(Skill skill){this.learnedSkills.add(skill);}
+    protected void setCurrentHp(int currentHp) {this.currentHp = currentHp;}
+    protected void setCurrentResource(int currentResource) {this.currentResource = currentResource;}
+    protected void setLevel(int level) {this.level = level;}
+    protected void levelUp() {this.level++;}
+    protected void setCurrentXp(int currentXp) {this.currentXp = currentXp;}
+    protected void setLearnedSkills(List<Skill> learnedSkills) {this.learnedSkills = learnedSkills;}
+    protected void addLearnedSkill(Skill skill){this.learnedSkills.add(skill);}
 }

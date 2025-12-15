@@ -14,7 +14,8 @@ public class RoomDefinition {
 
     public RoomDefinition(
             String roomId,
-            String roomName, String roomDescription
+            String roomName,
+            String roomDescription
     )
     {
         this.roomId = roomId;
@@ -22,8 +23,8 @@ public class RoomDefinition {
         this.roomDescription = roomDescription;
     }
 
-    public String getRoomId() {return roomId;}
-    public String getRoomName() {return roomName;}
-    public String getRoomDescription() {return roomDescription;}
+    protected String getRoomId() {return roomId;}
+    protected String getRoomName() {return roomName;}
+    protected String getRoomDescription() {return roomDescription;}
 
 }

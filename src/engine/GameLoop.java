@@ -5,7 +5,7 @@ package engine;
 import systems.actors.player.Player;
 import systems.combat.CombatScene;
 import systems.rooms.ExplorationPhase;
-import systems.rooms.RoomStateTest;
+import systems.rooms.Room;
 import systems.world.WorldBuilder;
 
 
@@ -56,7 +56,7 @@ public class GameLoop {
                 case INTERACTABLES -> eP.playInteractableDialog(currentRoom, player);
                 case ROOMDESCRIPTION -> eP.replayRoomDialog(currentRoom.getRoomDialogChunks());
                 case ROOMNAVIGATION -> {
-                    Optional<RoomStateTest> maybeNextRoom = eP.chooseNextRoom(currentRoom);
+                    Optional<Room> maybeNextRoom = eP.chooseNextRoom(currentRoom);
                     if (maybeNextRoom.isPresent()) {
                         currentRoom = maybeNextRoom.get();
                     }

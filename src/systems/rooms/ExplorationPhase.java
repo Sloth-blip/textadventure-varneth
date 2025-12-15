@@ -16,11 +16,11 @@ public class ExplorationPhase {
     RewardHandler rewardHandler = new RewardHandler();
 
     // Flag für besuchte Räume
-    List<RoomStateTest> roomsVisited = new ArrayList<>();
+    List<Room> roomsVisited = new ArrayList<>();
 
     ExplorationConsoleMenu explorationConsoleMenu = new ExplorationConsoleMenu();
 
-    public ExplorationAction explorationPhase(RoomStateTest room) {
+    public ExplorationAction explorationPhase(Room room) {
 
             System.out.println(room.getRoomDescription());
 
@@ -33,7 +33,7 @@ public class ExplorationPhase {
         return explorationConsoleMenu.consoleMenuExplorationOptionChooser(room);
     }
 
-    public Optional<RoomStateTest> chooseNextRoom(RoomStateTest currentRoom){
+    public Optional<Room> chooseNextRoom(Room currentRoom){
         return explorationConsoleMenu.consoleMenuDisplayAndChooseConnectedRooms(currentRoom.getConnectedRooms());
     }
 
@@ -41,7 +41,7 @@ public class ExplorationPhase {
         explorationConsoleMenu.consoleMenuDisplayRoomDialog(roomDialog);
     }
 
-    public void playInteractableDialog(RoomStateTest room, Player player){
+    public void playInteractableDialog(Room room, Player player){
 
         Optional<PointOfInterest> maybePOI = explorationConsoleMenu.consoleMenuDisplayAndChooseInteractables(room);
         if (maybePOI.isPresent()) {

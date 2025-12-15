@@ -3,7 +3,7 @@ package ui.consolemenus;
 import input.TextInput;
 import systems.actors.player.Player;
 import systems.interactables.PointOfInterest;
-import systems.rooms.RoomStateTest;
+import systems.rooms.Room;
 import ui.enums.ExplorationAction;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class ExplorationConsoleMenu {
 
     /** Exploration Misc **/
 
-    public void consoleMenuExplorationEntered(RoomStateTest room){
+    public void consoleMenuExplorationEntered(Room room){
         System.out.println("Du befindest dich in " + room + ".");
         if (!room.getConnectedRooms().isEmpty()){
             System.out.print(room.getConnectedRooms().size() + " Räume verbunden. ");
@@ -24,13 +24,13 @@ public class ExplorationConsoleMenu {
         if (!room.getEnemies().isEmpty()){
             System.out.print(room.getEnemies().size() + " Gegner vorhanden. ");
         }
-        if (!room.getInteractables().isEmpty()){
-            System.out.print(room.getInteractables().size() + " Interaktionen vorhanden. ");
+        if (!room.getPOIs().isEmpty()){
+            System.out.print(room.getPOIs().size() + " Interaktionen vorhanden. ");
         }
         System.out.println();
     }
 
-    public ExplorationAction consoleMenuExplorationOptionChooser(RoomStateTest room){
+    public ExplorationAction consoleMenuExplorationOptionChooser(Room room){
         int menuOption = 1;
         List<ExplorationAction> actions = new ArrayList<>();
         if(!room.getEnemies().isEmpty()){
@@ -39,7 +39,7 @@ public class ExplorationConsoleMenu {
             menuOption++;
         }
 
-        if(!room.getInteractables().isEmpty() && room.getEnemies().isEmpty()){
+        if(!room.getPOIs().isEmpty() && room.getEnemies().isEmpty()){
             System.out.println(menuOption + ".: " + ExplorationAction.INTERACTABLES);
             actions.add(ExplorationAction.INTERACTABLES);
             menuOption++;
@@ -62,11 +62,11 @@ public class ExplorationConsoleMenu {
         return actions.get(selection);
     }
 
-    public Optional<RoomStateTest> consoleMenuDisplayAndChooseConnectedRooms(List<RoomStateTest> connectedRooms) {
+    public Optional<Room> consoleMenuDisplayAndChooseConnectedRooms(List<Room> connectedRooms) {
         int menuOption = 1;
-        List<RoomStateTest> choice = new ArrayList<>();
+        List<Room> choice = new ArrayList<>();
 
-        for (RoomStateTest r : connectedRooms){
+        for (Room r : connectedRooms){
             System.out.println(menuOption + ".: " + r);
             choice.add(r);
             menuOption++;
@@ -84,12 +84,12 @@ public class ExplorationConsoleMenu {
 
     /** PointOfInterests **/
 
-    public Optional<PointOfInterest> consoleMenuDisplayAndChooseInteractables(RoomStateTest room) {
+    public Optional<PointOfInterest> consoleMenuDisplayAndChooseInteractables(Room room) {
         int menuOption = 1;
 
         List<PointOfInterest> choice = new ArrayList<>();
 
-        for (PointOfInterest pOI : room.getInteractables()){
+        for (PointOfInterest pOI : room.getPOIs()){
             System.out.println(menuOption + ".: " + pOI.getName());
             choice.add(pOI);
             menuOption++;

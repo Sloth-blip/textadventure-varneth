@@ -5,7 +5,9 @@ import systems.interactables.PointOfInterest;
 import systems.interactables.PointOfInterestDefinition;
 import systems.interactables.PointOfInterestState;
 import systems.reward.Reward;
-import systems.rooms.RoomStateTest;
+import systems.rooms.Room;
+import systems.rooms.RoomDefinition;
+import systems.rooms.RoomState;
 import systems.spells.SpellTemplates;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class WorldBuilder {
                                         "Still very booky"
                                 )
                         ),
-                        new Reward(SpellTemplates.get("pebbles"),0,0)
+                        new Reward(SpellTemplates.get("pebbles"), 0, 0)
 
                 ),
                 new PointOfInterestState(true)
@@ -47,7 +49,7 @@ public class WorldBuilder {
                                 ),
                                 List.of()
                         ),
-                        new Reward(null,100,0)
+                        new Reward(null, 100, 0)
 
                 ),
                 new PointOfInterestState(false)
@@ -66,7 +68,7 @@ public class WorldBuilder {
                                         "Sleep tite booboo."
                                 )
                         ),
-                        new Reward(null,0,0)
+                        new Reward(null, 0, 0)
                 ),
                 new PointOfInterestState(true)
         );
@@ -78,35 +80,47 @@ public class WorldBuilder {
 
         /** Räume (Instanz - Interactable einsetzen - Gegner platzieren) **/
 
-        var room1 = new RoomStateTest(
-                1,
-                "Beginn",
-                "Der erste Raum",
-                List.of("Spielintro.", "Blablabla", "Bla.", "Bla?", "Bla!"),
-                new ArrayList<>(List.of(book1, cabinet1, restingPlace))
-        );
+        var room1 = new Room(
+                new RoomDefinition(
+                        "1",
+                        "Beginn",
+                        "Der erste Raum"
+                ),
+                new RoomState(
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(List.of(book1, cabinet1, restingPlace)),
+                        List.of(),
+                        List.of("Spielintro.", "Blablabla", "Bla.", "Bla?", "Bla!")
+                ));
 
-        room1.setEnemies(new ArrayList<>(List.of()));
+        var room2 = new Room(
+                new RoomDefinition(
+                        "2",
+                        "Weiter",
+                        "Der zweite Raum"
+                ),
+                new RoomState(
+                        new ArrayList<>(List.of(bat1, slime)),
+                        List.of(),
+                        List.of(),
+                        List.of(),
+                        List.of("Hier geht es weiter.", "Du musst erst die Gegner besiegen.")
+                ));
 
-        var room2 = new RoomStateTest(
-                2,
-                "Weiter",
-                "Der zweite Raum",
-                List.of("Hier geht es weiter.", "Du musst erst die Gegner besiegen."),
-                List.of()
-        );
-
-        room2.setEnemies(new ArrayList<>(List.of(bat1,slime)));
-
-        var room3 = new RoomStateTest(
-                3,
-                "Noch Weiter",
-                "Der dritte Raum",
-                List.of(),
-                new ArrayList<>(List.of(restingPlace))
-        );
-
-        room3.setEnemies(new ArrayList<>(List.of(bat2)));
+        var room3 = new Room(
+                new RoomDefinition(
+                        "3",
+                        "Noch Weiter",
+                        "Der dritte Raum"
+                ),
+                new RoomState(
+                        new ArrayList<>(List.of(bat2)),
+                        List.of(),
+                        new ArrayList<>(List.of(restingPlace)),
+                        List.of(),
+                        List.of("Henlo")
+                ));
 
         /** Räume verbinden **/
 
@@ -114,9 +128,8 @@ public class WorldBuilder {
         room2.setConnectedRooms(new ArrayList<>(List.of(room1, room3)));
         room3.setConnectedRooms(new ArrayList<>(List.of(room2)));
 
-        return new WorldState(room1, List.of(room1,room2, room3));
+        return new WorldState(room1, List.of(room1, room2, room3));
     }
-
 
 
 }
