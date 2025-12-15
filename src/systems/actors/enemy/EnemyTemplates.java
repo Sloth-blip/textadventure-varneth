@@ -68,8 +68,8 @@ public class EnemyTemplates {
         return new Enemy(
                 def,
                 new ActorState(
-                        def.getBaseHp() + def.getHpPerLevel() * 1,
-                        def.getBaseResource() + def.getResourcePerLevel() * 1,
+                        def.getBaseHp() + def.getHpPerLevel(),
+                        def.getBaseResource() + def.getResourcePerLevel(),
                         1,
                         0,
                         new ArrayList<>(List.of())

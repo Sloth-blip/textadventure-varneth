@@ -5,7 +5,7 @@ import systems.interactables.PointOfInterest;
 import systems.interactables.PointOfInterestDefinition;
 import systems.interactables.PointOfInterestState;
 import systems.reward.Reward;
-import systems.rooms.RoomState;
+import systems.rooms.RoomStateTest;
 import systems.spells.SpellTemplates;
 
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class WorldBuilder {
 
         /** Räume (Instanz - Interactable einsetzen - Gegner platzieren) **/
 
-        var room1 = new RoomState(
+        var room1 = new RoomStateTest(
                 1,
                 "Beginn",
                 "Der erste Raum",
@@ -88,7 +88,7 @@ public class WorldBuilder {
 
         room1.setEnemies(new ArrayList<>(List.of()));
 
-        var room2 = new RoomState(
+        var room2 = new RoomStateTest(
                 2,
                 "Weiter",
                 "Der zweite Raum",
@@ -98,7 +98,7 @@ public class WorldBuilder {
 
         room2.setEnemies(new ArrayList<>(List.of(bat1,slime)));
 
-        var room3 = new RoomState(
+        var room3 = new RoomStateTest(
                 3,
                 "Noch Weiter",
                 "Der dritte Raum",

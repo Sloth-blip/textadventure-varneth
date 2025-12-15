@@ -3,7 +3,7 @@ package ui.consolemenus;
 import input.TextInput;
 import systems.actors.player.Player;
 import systems.interactables.PointOfInterest;
-import systems.rooms.RoomState;
+import systems.rooms.RoomStateTest;
 import ui.enums.ExplorationAction;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class ExplorationConsoleMenu {
 
     /** Exploration Misc **/
 
-    public void consoleMenuExplorationEntered(RoomState room){
+    public void consoleMenuExplorationEntered(RoomStateTest room){
         System.out.println("Du befindest dich in " + room + ".");
         if (!room.getConnectedRooms().isEmpty()){
             System.out.print(room.getConnectedRooms().size() + " Räume verbunden. ");
@@ -30,7 +30,7 @@ public class ExplorationConsoleMenu {
         System.out.println();
     }
 
-    public ExplorationAction consoleMenuExplorationOptionChooser(RoomState room){
+    public ExplorationAction consoleMenuExplorationOptionChooser(RoomStateTest room){
         int menuOption = 1;
         List<ExplorationAction> actions = new ArrayList<>();
         if(!room.getEnemies().isEmpty()){
@@ -62,11 +62,11 @@ public class ExplorationConsoleMenu {
         return actions.get(selection);
     }
 
-    public Optional<RoomState> consoleMenuDisplayAndChooseConnectedRooms(List<RoomState> connectedRooms) {
+    public Optional<RoomStateTest> consoleMenuDisplayAndChooseConnectedRooms(List<RoomStateTest> connectedRooms) {
         int menuOption = 1;
-        List<RoomState> choice = new ArrayList<>();
+        List<RoomStateTest> choice = new ArrayList<>();
 
-        for (RoomState r : connectedRooms){
+        for (RoomStateTest r : connectedRooms){
             System.out.println(menuOption + ".: " + r);
             choice.add(r);
             menuOption++;
@@ -84,7 +84,7 @@ public class ExplorationConsoleMenu {
 
     /** PointOfInterests **/
 
-    public Optional<PointOfInterest> consoleMenuDisplayAndChooseInteractables(RoomState room) {
+    public Optional<PointOfInterest> consoleMenuDisplayAndChooseInteractables(RoomStateTest room) {
         int menuOption = 1;
 
         List<PointOfInterest> choice = new ArrayList<>();

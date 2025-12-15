@@ -3,7 +3,6 @@ package systems.rooms;
 import systems.actors.player.Player;
 import systems.interactables.PointOfInterest;
 import systems.reward.RewardHandler;
-import ui.consolemenus.ConsoleMenuGeneral;
 import ui.consolemenus.ExplorationConsoleMenu;
 import ui.enums.ExplorationAction;
 
@@ -17,11 +16,11 @@ public class ExplorationPhase {
     RewardHandler rewardHandler = new RewardHandler();
 
     // Flag für besuchte Räume
-    List<RoomState> roomsVisited = new ArrayList<>();
+    List<RoomStateTest> roomsVisited = new ArrayList<>();
 
     ExplorationConsoleMenu explorationConsoleMenu = new ExplorationConsoleMenu();
 
-    public ExplorationAction explorationPhase(RoomState room) {
+    public ExplorationAction explorationPhase(RoomStateTest room) {
 
             System.out.println(room.getRoomDescription());
 
@@ -34,7 +33,7 @@ public class ExplorationPhase {
         return explorationConsoleMenu.consoleMenuExplorationOptionChooser(room);
     }
 
-    public Optional<RoomState> chooseNextRoom(RoomState currentRoom){
+    public Optional<RoomStateTest> chooseNextRoom(RoomStateTest currentRoom){
         return explorationConsoleMenu.consoleMenuDisplayAndChooseConnectedRooms(currentRoom.getConnectedRooms());
     }
 
@@ -42,7 +41,7 @@ public class ExplorationPhase {
         explorationConsoleMenu.consoleMenuDisplayRoomDialog(roomDialog);
     }
 
-    public void playInteractableDialog(RoomState room, Player player){
+    public void playInteractableDialog(RoomStateTest room, Player player){
 
         Optional<PointOfInterest> maybePOI = explorationConsoleMenu.consoleMenuDisplayAndChooseInteractables(room);
         if (maybePOI.isPresent()) {

@@ -1,23 +1,23 @@
 package systems.world;
 
-import systems.rooms.RoomState;
+import systems.rooms.RoomStateTest;
 
 import java.util.List;
 
 public class WorldState {
 
-    private final RoomState startRoom;
-    private final List<RoomState> allRooms;
+    private final RoomStateTest startRoom;
+    private final List<RoomStateTest> allRooms;
 
 
-    public WorldState(RoomState startRoom, List<RoomState> allRooms) {
+    public WorldState(RoomStateTest startRoom, List<RoomStateTest> allRooms) {
         this.startRoom = startRoom;
         this.allRooms = allRooms;
     }
 
     /** Getter **/
 
-    public RoomState getStartRoom() {return this.startRoom;}
-    public List<RoomState> getAllRooms() {return this.allRooms;}
+    public RoomStateTest getStartRoom() {return this.startRoom;}
+    public List<RoomStateTest> getAllRooms() {return this.allRooms;}
 
 }
