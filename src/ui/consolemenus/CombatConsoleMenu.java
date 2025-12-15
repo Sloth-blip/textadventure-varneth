@@ -1,6 +1,7 @@
 package ui.consolemenus;
 
 import input.TextInput;
+import systems.actors.Actor;
 import systems.actors.enemy.Enemy;
 import systems.actors.player.Player;
 import systems.spells.Skill;
@@ -103,6 +104,20 @@ public class CombatConsoleMenu {
         int selection = textInput.inputVerifier(choice.size()) -1;
         System.out.println(choice.get(selection) + " gewählt.");
         return choice.get(selection);
+    }
+
+    /** Combat Info **/
+
+    public void damagePrintDefault(Actor actor, Actor target, int dmg){
+        System.out.println(actor.getName() + " hat " + dmg + " Schaden an " + target.getName() + " verursacht!");
+    }
+
+    public void damagePrintSkill(Actor actor, Skill spell, Actor target, int dmg){
+        System.out.println(actor.getName() + " hat mit " + spell + " " + dmg + " Schaden an " + target.getName() + " verursacht!");
+    }
+
+    public void actorDied(Actor actor){
+        System.out.println(actor.getName() + " besiegt!");
     }
 
 }

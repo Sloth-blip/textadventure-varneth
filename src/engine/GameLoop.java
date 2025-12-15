@@ -41,16 +41,14 @@ public class GameLoop {
             switch (nextStep){
                 case COMBAT ->{
                     CombatScene.CombatResult result = cS.combatLoop(player, currentRoom.getEnemies());
+                    userInterface.consoleMessageCombatResult(nextStep, result);
                     switch (result){
                         case WON -> {
-                            System.out.println("Kampf gewonnen!");
                             currentRoom.setEnemies(List.of());
                         }
                         case LOST -> {
-                            System.out.println("Kampf verloren, Game over!");
                             running = false;
                         }
-                        case FLED -> System.out.println("Kampf entflohen!");
                     }
                 }
                 case INTERACTABLES -> eP.playInteractableDialog(currentRoom, player);

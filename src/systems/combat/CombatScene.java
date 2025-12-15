@@ -15,9 +15,16 @@ import java.util.Optional;
 public class CombatScene {
 
     public enum CombatResult {
-        WON,
-        LOST,
-        FLED;
+        WON("gewonnen!"),
+        LOST("verloren!"),
+        FLED("geflohen!");
+
+        private final String displayName;
+
+        CombatResult(String displayName){this.displayName = displayName;}
+
+        @Override
+        public String toString(){return displayName;}
     }
 
     public CombatResult combatLoop(Player player, List<Enemy> enemies){
@@ -41,12 +48,11 @@ public class CombatScene {
 
                     Enemy target = maybeTarget.get();
                     int dmg = player.basicAttack();
-                    System.out.println(target.getName() + " hat " + dmg + " Schaden erhalten!");
+                    combatMenu.damagePrintDefault(player, target, dmg);
                     target.recieveDamage(dmg);
                     if(target.isDead()){
-                        System.out.println(target.getName() + " besiegt! ");
+                        combatMenu.actorDied(target);
                         rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
-
                     }
                     if (enemies.stream().allMatch(Enemy::isDead)){
                         return CombatResult.WON;
@@ -64,10 +70,10 @@ public class CombatScene {
                     }
                     Enemy target = maybeTarget.get();
                     int dmg = player.calculateDamageDealtWithSkill(spell);
-                    System.out.println(spell.getName() + " von " + player.getName() + " hat " + dmg + " Schaden an " + target.getName() + " verursacht!");
+                    combatMenu.damagePrintSkill(player, spell, target, dmg);
                     target.recieveDamage(dmg);
                     if(target.isDead()){
-                        System.out.println(target.getName() + " besiegt! ");
+                        combatMenu.actorDied(target);
                         rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
                     }
                     if (enemies.stream().allMatch(Enemy::isDead)){
@@ -88,10 +94,11 @@ public class CombatScene {
             for (Enemy enemy : enemies) {
                 if(!enemy.isDead()) {
                     int dmg = enemy.basicAttack();
-                    System.out.println(enemy.getName() + " hat " + player.getName() + " " + dmg + " Schaden zugefügt!");
+                    combatMenu.damagePrintDefault(enemy, player, dmg);
                     player.recieveDamage(dmg);
 
                     if (player.isDead()) {
+                        combatMenu.actorDied(player);
                         return CombatResult.LOST;
                     }
                 }

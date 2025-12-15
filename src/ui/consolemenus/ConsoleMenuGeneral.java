@@ -61,7 +61,11 @@ public class ConsoleMenuGeneral {
         System.out.println(actor.getName() + " hat " + xp + " Erfahrung erhalten!");
     }
 
-    /** Misc Console Messages **/
+    /** Misc. Console Messages **/
+
+    public void consoleMessageCombatResult(Enum combat, Enum result){
+        System.out.println(combat + " " + result);
+    }
 
 }
 
