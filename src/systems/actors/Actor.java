@@ -1,10 +1,8 @@
 package systems.actors;
 
-import systems.spells.ModifyingAttribute;
 import systems.spells.Skill;
 
 import java.util.List;
-import java.util.Objects;
 
 public abstract class Actor <D extends ActorDefinition> {
 
@@ -22,7 +20,7 @@ public abstract class Actor <D extends ActorDefinition> {
     }
 
     @Override
-    public String toString() {return def.toString() + state.toString();}
+    public String toString(){return def.toString();}
 
     /** Stats Getter (@Property) **/
 
@@ -57,6 +55,7 @@ public abstract class Actor <D extends ActorDefinition> {
         return def.getBaseWisdom() + fromLevel;
 
     }
+
     public int getCurrentXp(){return state.getCurrentXp();}
 
     public int getCurrentXpThreshold(){
@@ -84,8 +83,8 @@ public abstract class Actor <D extends ActorDefinition> {
 
     public int calculateDamageDealtWithSkill(Skill skill) {
         MainAttribute mainAttribute = def.getMainAttribute();
-        ModifyingAttribute modifyingAttribute = skill.getModifyingAttribute();
-        if (Objects.equals(mainAttribute.toString(), modifyingAttribute.toString())){
+        MainAttribute modifyingAttribute = skill.getModifyingAttribute();
+        if (mainAttribute == modifyingAttribute){
             return skill.getModifier() + getMainAttributeValue();
         }
         else {

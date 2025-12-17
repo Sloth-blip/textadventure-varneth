@@ -8,16 +8,16 @@ import java.util.List;
 
 public class Room {
 
-    public final RoomDefinition def;
-    public final RoomState state;
+    private final RoomDefinition def;
+    private final RoomState state;
 
     public Room(
             RoomDefinition def,
-            RoomState stete
+            RoomState state
     )
     {
         this.def = def;
-        this.state = stete;
+        this.state = state;
     }
 
     @Override

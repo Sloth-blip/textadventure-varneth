@@ -1,11 +1,13 @@
 package systems.spells;
 
+import systems.actors.MainAttribute;
+
 import java.util.Map;
 
 public class SpellTemplates {
 
-    private static final Skill PEBBLES =
-            new Skill(new Skilldefinition(
+    private static final SkillDefinition PEBBLES =
+            new SkillDefinition(
                   "pebbles",
                     "Steinschleuder",
                     5,
@@ -13,19 +15,23 @@ public class SpellTemplates {
                     2,
                     10,
                     2,
-                    ModifyingAttribute.INTELLIGENCE
-            ),
-                    new SkillState(
-                            1,
-                            0
-                    )
+                    MainAttribute.INTELLIGENCE
             );
 
-    private static final Map<String, Skill> BY_ID = Map.of(
+    private static final Map<String, SkillDefinition> BY_ID = Map.of(
             "pebbles", PEBBLES
     );
 
     public static Skill get(String id){
-        return BY_ID.get(id);
+        SkillDefinition def = BY_ID.get(id);
+        return new Skill(
+                def,
+                new SkillState(
+                        1,
+                        0
+                )
+        );
+
     }
+
 }

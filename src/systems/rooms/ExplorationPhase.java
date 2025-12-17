@@ -2,6 +2,7 @@ package systems.rooms;
 
 import systems.actors.player.Player;
 import systems.interactables.PointOfInterest;
+import systems.interactables.PointOfInterestType;
 import systems.reward.RewardHandler;
 import ui.consolemenus.ExplorationConsoleMenu;
 import ui.enums.ExplorationAction;
@@ -50,7 +51,7 @@ public class ExplorationPhase {
             explorationConsoleMenu.consoleMenuDisplayInteractableDialog(
                     pOI.getDialogChunks()
             );
-            if (Objects.equals(maybePOI.get().getName(), "Rastplatz")){
+            if (pOI.getType() == PointOfInterestType.REST){
                 player.takeRest();
                 explorationConsoleMenu.explorationMenuTakeRest(player);
             }

@@ -4,10 +4,12 @@ import systems.reward.Reward;
 
 import java.util.List;
 
+
 public class PointOfInterestDefinition {
 
     private final String pOIID;
     private final String name;
+    private final PointOfInterestType type;
     private final List<List<String>> dialogChunks;
     private final Reward rewards;
 
@@ -15,24 +17,27 @@ public class PointOfInterestDefinition {
     public PointOfInterestDefinition(
             String pOIID,
             String name,
+            PointOfInterestType type,
             List<List<String>> dialogChunks,
             Reward rewards
     )
     {
         this.pOIID = pOIID;
         this.name = name;
+        this.type = type;
         this.dialogChunks = dialogChunks;
         this.rewards = rewards;
     }
 
-    public String getpOIID() {return pOIID;}
-    public String getName() {return name;}
-    public List<List<String>> getDialogsChunks() {return dialogChunks;}
-    public List<String> getDialogChunk(boolean isUsed){
+    protected String getpOIID() {return pOIID;}
+    protected String getName() {return name;}
+    protected PointOfInterestType getType() {return type;}
+    protected List<List<String>> getDialogsChunks() {return dialogChunks;}
+    protected List<String> getDialogChunk(boolean isUsed){
         if (!isUsed){return this.dialogChunks.getFirst();}
         else {return this.dialogChunks.getLast();}
     }
-    public Reward getRewards() {return rewards;}
+    protected Reward getRewards() {return rewards;}
 
 
 }

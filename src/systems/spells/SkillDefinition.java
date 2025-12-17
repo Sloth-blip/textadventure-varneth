@@ -1,6 +1,8 @@
 package systems.spells;
 
-public class Skilldefinition {
+import systems.actors.MainAttribute;
+
+public class SkillDefinition {
 
 //    private final String iD;
     private final String name;
@@ -10,12 +12,12 @@ public class Skilldefinition {
     private final int modifierPerLevel;
     private final int baseXpThreshold;
     private final int xpThresholdExponent;
-    private final ModifyingAttribute modifyingAttribute;
+    private final MainAttribute modifyingAttribute;
 
     @Override
     public String toString(){return this.name;}
 
-    public Skilldefinition(
+    public SkillDefinition(
 //            String iD,
             String name,
             String description,
@@ -23,7 +25,7 @@ public class Skilldefinition {
             int baseModifier, int modifierPerLevel,
             int baseXpThreshold,
             int xpThresholdExponent,
-            ModifyingAttribute modifyingAttribute
+            MainAttribute modifyingAttribute
     )
     {
 //        this.iD = iD;
@@ -47,6 +49,6 @@ public class Skilldefinition {
     public int getModifierPerLevel() {return modifierPerLevel;}
     public int getBaseXpThreshold() {return baseXpThreshold;}
     public int getXpThresholdExponent() {return xpThresholdExponent;}
-    public ModifyingAttribute getModifyingAttribute() {return modifyingAttribute;}
+    public MainAttribute getModifyingAttribute() {return modifyingAttribute;}
 
 }

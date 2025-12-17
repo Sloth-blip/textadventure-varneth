@@ -1,12 +1,14 @@
 package systems.spells;
 
+import systems.actors.MainAttribute;
+
 public class Skill {
 
-    private final Skilldefinition def;
+    private final SkillDefinition def;
     private final SkillState state;
 
     public Skill(
-            Skilldefinition def,
+            SkillDefinition def,
             SkillState state
     ){
         this.def = def;
@@ -29,7 +31,7 @@ public class Skill {
 
     /** Combat **/
 
-    public ModifyingAttribute getModifyingAttribute() {return def.getModifyingAttribute();}
+    public MainAttribute getModifyingAttribute() {return def.getModifyingAttribute();}
 
     /** Level-Up Logic **/
 

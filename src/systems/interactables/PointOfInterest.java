@@ -22,6 +22,7 @@ public class PointOfInterest {
 
     public String getPOIID() {return def.getpOIID();}
     public String getName() {return def.getName();}
+    public PointOfInterestType getType() {return def.getType();}
     public List<List<String>> getDialogsChunks() {return def.getDialogsChunks();}
     public List<String> getDialogChunks() {return def.getDialogChunk(isUsed());}
     public Reward getRewards() {return def.getRewards();}

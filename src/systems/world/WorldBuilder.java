@@ -4,6 +4,7 @@ import systems.actors.enemy.EnemyTemplates;
 import systems.interactables.PointOfInterest;
 import systems.interactables.PointOfInterestDefinition;
 import systems.interactables.PointOfInterestState;
+import systems.interactables.PointOfInterestType;
 import systems.reward.Reward;
 import systems.rooms.Room;
 import systems.rooms.RoomDefinition;
@@ -23,6 +24,7 @@ public class WorldBuilder {
                 new PointOfInterestDefinition(
                         "book",
                         "Buch",
+                        PointOfInterestType.STORY,
                         List.of(
                                 List.of(
                                         "Very book",
@@ -42,6 +44,7 @@ public class WorldBuilder {
                 new PointOfInterestDefinition(
                         "cabinet",
                         "Schrank",
+                        PointOfInterestType.LOOT,
                         List.of(
                                 List.of(
                                         "Ikea Schrank",
@@ -58,6 +61,7 @@ public class WorldBuilder {
                 new PointOfInterestDefinition(
                         "resting Place",
                         "Rastplatz",
+                        PointOfInterestType.REST,
                         List.of(
                                 List.of(
                                         "Ein Platz zum Rasten.",

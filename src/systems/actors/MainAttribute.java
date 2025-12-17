@@ -2,7 +2,8 @@ package systems.actors;
 
 public enum MainAttribute {
     STRENGTH("Stärke"),
-    INTELLIGENCE("Intelligenz");
+    INTELLIGENCE("Intelligenz"),
+    NONE("-");
 
     public final String name;
 

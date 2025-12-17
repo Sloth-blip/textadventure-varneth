@@ -14,12 +14,9 @@ import java.util.List;
 
 public class GameStart {
 
-
     static ConsoleMenuGeneral consoleMenuGeneral = new ConsoleMenuGeneral();
 
     public void gameStartStart(){
-
-
 
         while (true){
             GameStartAction choice = consoleMenuGeneral.consoleMenuGameStart();
