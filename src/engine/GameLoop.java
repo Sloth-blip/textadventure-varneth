@@ -2,6 +2,8 @@ package engine;
 
 
 
+import engine.events.EventBus;
+import renderer.CombatConsoleNarrator;
 import systems.actors.player.Player;
 import systems.combat.CombatScene;
 import systems.rooms.ExplorationPhase;
@@ -23,9 +25,11 @@ public class GameLoop {
     public void gameLoopStart(Player player) {
 
         ConsoleMenuGeneral userInterface = new ConsoleMenuGeneral();
+        EventBus bus = new EventBus();
+        new CombatConsoleNarrator(bus);
 
 
-        var cS = new CombatScene();
+        var cS = new CombatScene(bus);
         var eP = new ExplorationPhase();
 
         var testWorld = WorldBuilder.buildTestWorld();
@@ -39,7 +43,7 @@ public class GameLoop {
             ExplorationAction nextStep = eP.explorationPhase(currentRoom);
 
             switch (nextStep){
-                case COMBAT ->{
+                case COMBAT -> {
                     CombatScene.CombatResult result = cS.combatLoop(player, currentRoom.getEnemies());
                     userInterface.consoleMessageCombatResult(nextStep, result);
                     switch (result){

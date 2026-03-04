@@ -1,6 +1,8 @@
 package systems.combat;
 
 
+import engine.events.DamageDealt;
+import engine.events.EventBus;
 import systems.actors.enemy.Enemy;
 
 import systems.actors.player.Player;
@@ -13,6 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class CombatScene {
+
+    private final EventBus bus;
+
+    public CombatScene(EventBus bus) {
+        this.bus = bus;
+    }
 
     public enum CombatResult {
         WON("gewonnen!"),
@@ -48,8 +56,9 @@ public class CombatScene {
 
                     Enemy target = maybeTarget.get();
                     int dmg = player.basicAttack();
-                    combatMenu.damagePrintDefault(player, target, dmg);
+                    int hpBefore = target.getCurrentHp();
                     target.recieveDamage(dmg);
+                    bus.publish(new DamageDealt(player, target, dmg, null, hpBefore, target.getCurrentHp()));
                     if(target.isDead()){
                         combatMenu.actorDied(target);
                         rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
@@ -70,8 +79,9 @@ public class CombatScene {
                     }
                     Enemy target = maybeTarget.get();
                     int dmg = player.calculateDamageDealtWithSkill(spell);
-                    combatMenu.damagePrintSkill(player, spell, target, dmg);
+                    int hpBefore = target.getCurrentHp();
                     target.recieveDamage(dmg);
+                    bus.publish(new DamageDealt(player, target, dmg, spell, hpBefore, target.getCurrentHp()));
                     if(target.isDead()){
                         combatMenu.actorDied(target);
                         rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
@@ -94,9 +104,9 @@ public class CombatScene {
             for (Enemy enemy : enemies) {
                 if(!enemy.isDead()) {
                     int dmg = enemy.basicAttack();
-                    combatMenu.damagePrintDefault(enemy, player, dmg);
+                    int hpBefore = player.getCurrentHp();
                     player.recieveDamage(dmg);
-
+                    bus.publish(new DamageDealt(enemy, player, dmg, null, hpBefore, player.getCurrentHp()));
                     if (player.isDead()) {
                         combatMenu.actorDied(player);
                         return CombatResult.LOST;

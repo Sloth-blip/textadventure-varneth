@@ -108,14 +108,6 @@ public class CombatConsoleMenu {
 
     /** Combat Info **/
 
-    public void damagePrintDefault(Actor actor, Actor target, int dmg){
-        System.out.println(actor.getName() + " hat " + dmg + " Schaden an " + target.getName() + " verursacht!");
-    }
-
-    public void damagePrintSkill(Actor actor, Skill spell, Actor target, int dmg){
-        System.out.println(actor.getName() + " hat mit " + spell + " " + dmg + " Schaden an " + target.getName() + " verursacht!");
-    }
-
     public void actorDied(Actor actor){
         System.out.println(actor.getName() + " besiegt!");
     }
