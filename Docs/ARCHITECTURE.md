@@ -1,22 +1,24 @@
-# Kernarchitektur
+# Core Architecture
 
-GameLoop als Direktor für die klar gegliederten Phasen:
+The `GameLoop` acts as the central coordinator for the main gameplay phases:
 
-- GameStart
-- ExplorationPhase <-> DialogPhase
-- CombatScene
+- `GameStart`
+- `ExplorationPhase` ↔ `DialogPhase`
+- `CombatScene`
 
-Game-Logik erzeugt Ergebnisse, gibt sie an GameLoop weiter,
-stellt sie ggf. über UI dar und entscheidet dann, wie es weitergeht.
-
+Game logic produces results and passes them back to the `GameLoop`.
+The `GameLoop` can then forward them to the UI for presentation and decide how the game should continue.
 
 ## Definition - State - Instance
 
-### Definition: 
-- Unverändliche "Grundwerte" wie Name, BaseStats, StatsPerLevel, usw.
+### Definition
+Stores immutable base data such as name, base stats, stats per level, and similar core values.
 
-### State:
-- Veränderliche Werte wie Level, CurrentHp, CurrtentStats usw.
+### State
+Stores mutable runtime data such as level, current HP, and current calculated stats.
 
-### Instance:
-- Verbindungsstück von beidem. Außer def & state keine weiteren Felder sondern nur die benötigten Methoden.
+### Instance
+Connects definition and state.
+
+An instance should not introduce additional persistent fields beyond `definition` and `state`.
+Its main responsibility is to provide the behavior and methods that operate on both.

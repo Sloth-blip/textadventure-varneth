@@ -1,45 +1,48 @@
 # CombatScene
 
-## Zweck
+## Purpose
 
-`CombatScene` kapselt den kompletten Ablauf eines Kampfes zwischen dem Spieler
-und einer oder mehreren Gegnerinstanzen.
+`CombatScene` encapsulates the full flow of a combat encounter between the player and one or more enemy instances.
 
-Die Klasse steuert:
-- die Reihenfolge der Züge (Spieler → Gegner),
-- die Auswertung von Kampfergebnissen,
-- das Beenden des Kampfes (Sieg, Niederlage, Flucht).
+The class is responsible for:
 
-Aktuell enthält die Klasse **sowohl Game-Logik als auch Console-UI-Aufrufe**.
-Diese Vermischung ist **bewusst temporär** und wird schrittweise aufgelöst.
+- turn order handling (player → enemies)
+- evaluating combat outcomes
+- ending combat (victory, defeat, escape)
 
----
-
-## Verantwortung
-
-### CombatScene ist verantwortlich für:
-- den Kampfflow (Rundenlogik),
-- Schadensberechnung (über Player/Enemy),
-- Death-Checks (Player / Enemy),
-- das Auslösen von Rewards,
-- das Zurückgeben eines `CombatResult`.
-
-### CombatScene ist nicht verantwortlich für:
-- persistente Spielzustände außerhalb des Kampfes,
-- grafische Darstellung oder Animation,
-- Menü-Layout oder Input-Validierung (langfristiges Ziel).
+At the moment, the class still contains **both game logic and console UI calls**.
+This coupling is **intentional but temporary** and will be resolved step by step as the architecture evolves.
 
 ---
 
-## Kampfergebnis
+## Responsibilities
 
-Der Kampf endet mit einem `CombatResult`:
+### CombatScene is responsible for:
+
+- the combat flow (round logic)
+- damage calculation (via `Player` / `Enemy`)
+- death checks (`Player` / `Enemy`)
+- triggering rewards
+- returning a `CombatResult`
+
+### CombatScene is not responsible for:
+
+- persistent game state outside of combat
+- graphical presentation or animation
+- menu layout or long-term input validation
+
+---
+
+## Combat Result
+
+Combat ends with a `CombatResult`:
 
 ```java
 public enum CombatResult {
     WON,
     LOST,
     FLED
-}
+} 
 ```
-und gibt dieses an den GameLoop weiter.
+
+The result is then passed back to the `Gameloop`.

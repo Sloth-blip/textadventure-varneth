@@ -1,56 +1,65 @@
+# WorldBuilder / WorldState
+
+This document describes the responsibilities of `WorldBuilder` and `WorldState`.
+
+Together, they define how a concrete game world is created and how its current runtime state is represented.
+
+---
+
 # WorldBuilder
 
-## Zweck
+## Purpose
 
-`WorldBuilder` ist verantwortlich für den **Aufbau einer konkreten Spielwelt**.
-Er erzeugt Instanzen von:
-- Räumen
-- Gegnern
-- Interactables (Points of Interest)
-- Verbindungen zwischen Räumen
+`WorldBuilder` is responsible for constructing a concrete game world.
 
-Der Builder kapselt **Test- und Entwicklungswelten** und dient aktuell als
-zentrale Stelle, um Gameplay-Mechaniken zu testen.
+It creates instances of:
 
----
+- rooms
+- enemies
+- interactables (points of interest)
+- connections between rooms
 
-## Verantwortung
-
-### WorldBuilder ist verantwortlich für:
-- das Erzeugen einer lauffähigen Welt (`WorldState`)
-- das Platzieren von Interactables in Räumen
-- das Spawnen von Gegnerinstanzen
-- das Verbinden von Räumen
-
-### WorldBuilder ist nicht verantwortlich für:
-- Spiellogik (Exploration, Combat)
-- UI oder Darstellung
-- persistente Speicherung
-- Regelentscheidungen
+At the moment, the builder mainly encapsulates **test and development worlds** and serves as the central place for trying out gameplay mechanics.
 
 ---
 
-## Aktuelle Implementierung
+## Responsibilities
 
-### buildTestWorld()
+### WorldBuilder is responsible for:
+
+- creating a runnable world (`WorldState`)
+- placing interactables in rooms
+- spawning enemy instances
+- connecting rooms
+
+### WorldBuilder is not responsible for:
+
+- game logic (exploration, combat)
+- UI or presentation
+- persistent storage
+- rule decisions
+
+---
+
+## Current implementation
+
+### `buildTestWorld()`
 
 ```java
 public static WorldState buildTestWorld();
 ```
- 
-# WorldState
 
-## Zweck
+## WorldState
 
-`WorldState` repräsentiert den **aktuellen Zustand der gesamten Spielwelt**.
-Er dient als zentrales Objekt für:
-- Navigation
-- Phasensteuerung
-- zukünftige Save/Load-Mechaniken
+## Purpose
 
----
+`WorldState` represents the current state of the entire game world.
 
-## Struktur
+It acts as a central object for:
+
+ - navigation
+ - phase control
+ - future save/load mechanics
 
 ```java
 public class WorldState {

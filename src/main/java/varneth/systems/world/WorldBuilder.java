@@ -328,7 +328,6 @@ public class WorldBuilder {
     var batHall1 = EnemyTemplates.get("Fledermaus");
 
     var slimeCrossing = EnemyTemplates.get("Schleim");
-    var batCrossing = EnemyTemplates.get("Fledermaus");
 
     var batNest1 = EnemyTemplates.get("Fledermaus");
     var batNest2 = EnemyTemplates.get("Fledermaus");
@@ -355,7 +354,7 @@ public class WorldBuilder {
                     List.of(
                             "Du setzt den ersten Schritt in den verlassenen Außenposten.",
                             "Alles riecht nach Stein, altem Papier und abgestandener Feuchtigkeit.",
-                            "Noch wirkt der Ort still – zu still."
+                            "Noch wirkt der Ort still - zu still."
                     )
             )
     );
@@ -365,8 +364,8 @@ public class WorldBuilder {
                     "2",
                     "Wachgang",
                     "Ein langer Korridor mit eingedrücktem Boden und Resten alter Halterungen an der Wand. Etwas flattert im Dunkeln.",
-                    1,
-                    0
+                    0,
+                    1
             ),
             new RoomState(
                     new ArrayList<>(List.of(batEntrance, slimeHall1)),
@@ -386,7 +385,7 @@ public class WorldBuilder {
                     "Archivnische",
                     "Ein schmaler Seitenraum voller verkohlter Regale. Vieles ist zerstört, manches erstaunlich gut erhalten.",
                     1,
-                    -1
+                    1
             ),
             new RoomState(
                     new ArrayList<>(),
@@ -405,8 +404,8 @@ public class WorldBuilder {
                     "4",
                     "Zentraler Knoten",
                     "Mehrere Wege treffen in einer offenen Kammer zusammen. Kaputte Leitungen ziehen sich wie Adern durch die Decke.",
-                    2,
-                    0
+                    0,
+                    2
             ),
             new RoomState(
                     new ArrayList<>(List.of(batHall1, slimeCrossing)),
@@ -425,8 +424,8 @@ public class WorldBuilder {
                     "5",
                     "Stillkammer",
                     "Ein überraschend ruhiger Raum mit halb eingestürzten Säulen. In der Mitte brennt etwas, das eigentlich längst erloschen sein sollte.",
-                    2,
-                    -1
+                    1,
+                    2
             ),
             new RoomState(
                     new ArrayList<>(),
@@ -445,8 +444,8 @@ public class WorldBuilder {
                     "6",
                     "Nestkammer",
                     "Dunkle Fetzen hängen von der Decke. Der Boden ist mit Schleim und kleinen Knochen übersät.",
-                    3,
-                    0
+                    0,
+                    3
             ),
             new RoomState(
                     new ArrayList<>(List.of(batNest1, batNest2, slimeNest)),
@@ -465,8 +464,8 @@ public class WorldBuilder {
                     "7",
                     "Versorgungsraum",
                     "Hinter einer verstärkten Tür liegt ein überraschend intakter Lagerraum. Nicht sicher – aber sicherer als der Rest.",
-                    4,
-                    0
+                    0,
+                    4
             ),
             new RoomState(
                     new ArrayList<>(List.of(batFinal, slimeFinal)),

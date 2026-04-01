@@ -29,3 +29,11 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Gradle ###
+.gradle/
+build/
+
+### Vue ###
+frontend/node_modules/
+frontend/dist/
