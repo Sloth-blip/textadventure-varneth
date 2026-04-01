@@ -61,6 +61,7 @@ The long-term idea is to keep the backend responsible for game logic and state, 
 
 ## Project structure
 
+```text
 src/main/java/varneth/
 ├── application/
 ├── content/
@@ -76,7 +77,7 @@ Docs/
 ├── CombatScene.md
 ├── UI-LOGIC.md
 └── WorldState.md
-
+```
 ## What I practice with this project
 
 This project is where I actively practice:
