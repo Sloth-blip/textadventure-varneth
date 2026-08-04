@@ -5,40 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import varneth.input.TextInput;
-import varneth.systems.actors.Actor;
 import varneth.systems.actors.enemy.Enemy;
-import varneth.systems.actors.player.Player;
-import varneth.systems.spells.Skill;
+import varneth.systems.spells.AvailableSpell;
+import varneth.systems.spells.SpellSource;
 import varneth.ui.enums.CombatAction;
 
 public class CombatConsoleMenu {
 
     TextInput textInput = new TextInput();
-
-    public void consoleMenuCombatSceneBegin(Player player, List<Enemy> enemies) {
-        System.out.println("""
-                %s %d/%d
-                vs""".formatted(
-                player.getName(), player.getCurrentHp(), player.getMaxHp()
-        ));
-        for (Enemy enemy : enemies) {
-            if (!enemy.isDead()) {
-                System.out.println("""
-                        %s %d/%d""".formatted(
-                        enemy.getName(), enemy.getCurrentHp(), enemy.getMaxHp()
-                ));
-            }
-        }
-    }
-
-    public void consoleMenuCombatSceneState(Player player, List<Enemy> enemies) {
-        System.out.println(player.getName() + " " + player.getCurrentHp() + "/" + player.getMaxHp());
-        for (Enemy enemy : enemies) {
-            if(!enemy.isDead()) {
-                System.out.println(enemy.getName() + " " + enemy.getCurrentHp() + "/" + enemy.getMaxHp());
-            }
-        }
-    }
 
     public Optional<Enemy> consoleMenuTargetChooser(List<Enemy> enemies) {
 
@@ -73,22 +47,35 @@ public class CombatConsoleMenu {
         return Optional.of(verifiedEnemies.get(selection - 1));
     }
 
-    public Optional<Skill> consoleMenuSpellChooser(List<Skill> learnedSkills){
+    public Optional<AvailableSpell> consoleMenuSpellChooser(List<AvailableSpell> availableSpells){
         int menuOption = 1;
         System.out.println("Wähle den Zauber:");
-        for(Skill spell : learnedSkills){
-            System.out.println(menuOption + ".: " + spell.getName());
+        for(AvailableSpell availableSpell : availableSpells){
+            System.out.println(
+                    menuOption + ".: " + availableSpell.skill().getName()
+                            + " (" + spellSourceLabel(availableSpell) + ")"
+            );
             menuOption++;
         }
 
         System.out.println(menuOption + ".: Zurück");
 
-        int selection = textInput.inputVerifier(learnedSkills.size() + 1);
+        int selection = textInput.inputVerifier(availableSpells.size() + 1);
 
         if (menuOption == selection){
             return Optional.empty();
         }
-        return Optional.of(learnedSkills.get(selection-1));
+        return Optional.of(availableSpells.get(selection-1));
+    }
+
+    private String spellSourceLabel(AvailableSpell availableSpell) {
+        if (availableSpell.source() == SpellSource.ELEMENTAL) {
+            return "Ressource " + availableSpell.cost();
+        }
+        return availableSpell.crystal().getName()
+                + " " + availableSpell.crystal().getCurrentCharge()
+                + "/" + availableSpell.crystal().getMaxCharge()
+                + ", Kosten " + availableSpell.cost();
     }
 
     public CombatAction consoleMenuCombatMenu(){
@@ -104,12 +91,6 @@ public class CombatConsoleMenu {
         int selection = textInput.inputVerifier(choice.size()) -1;
         System.out.println(choice.get(selection) + " gewählt.");
         return choice.get(selection);
-    }
-
-    /** Combat Info **/
-
-    public void actorDied(Actor actor){
-        System.out.println(actor.getName() + " besiegt!");
     }
 
 }

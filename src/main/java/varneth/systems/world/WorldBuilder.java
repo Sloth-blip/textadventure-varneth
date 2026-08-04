@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import varneth.systems.actors.enemy.EnemyTemplates;
+import varneth.systems.items.MagicCrystalTemplates;
 import varneth.systems.interactables.PointOfInterest;
 import varneth.systems.interactables.PointOfInterestDefinition;
 import varneth.systems.interactables.PointOfInterestState;
@@ -52,7 +53,7 @@ public class WorldBuilder {
                                 ),
                                 List.of()
                         ),
-                        new Reward(null, 100, 0)
+                        new Reward(MagicCrystalTemplates.get("fire_crystal"))
 
                 ),
                 new PointOfInterestState(false)

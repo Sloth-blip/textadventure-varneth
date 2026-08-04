@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import varneth.systems.actors.player.Player;
+import varneth.systems.actors.player.PlayerState;
 
 class ActorTest {
 
@@ -32,6 +33,19 @@ class ActorTest {
     }
 
     @Test
+    void levelUpPreservesCurrentHpAndResourcePercentages() {
+        Player player = createPlayer(50, 55, 1, 0, 50, 50);
+
+        player.levelUp();
+
+        assertEquals(2, player.getLevel());
+        assertEquals(150, player.getMaxHp());
+        assertEquals(75, player.getCurrentHp());
+        assertEquals(60, player.getMaxResource());
+        assertEquals(60, player.getCurrentResource());
+    }
+
+    @Test
     void experienceCanLevelActorAndKeepsRemainder() {
         Player player = createPlayer(110, 55, 1, 0);
 
@@ -44,9 +58,15 @@ class ActorTest {
     }
 
     private Player createPlayer(int hp, int resource, int level, int xp) {
+        return createPlayer(hp, resource, level, xp, 100, 10);
+    }
+
+    private Player createPlayer(
+            int hp, int resource, int level, int xp, int baseHp, int hpPerLevel
+    ) {
         ActorDefinition definition = new ActorDefinition(
                 "Test Player",
-                100, 10,
+                baseHp, hpPerLevel,
                 50, 5,
                 10, 2,
                 20, 3,
@@ -55,11 +75,12 @@ class ActorTest {
                 MainAttribute.STRENGTH
         );
 
-        ActorState state = new ActorState(
+        PlayerState state = new PlayerState(
                 hp,
                 resource,
                 level,
                 xp,
+                new ArrayList<>(),
                 new ArrayList<>()
         );
 

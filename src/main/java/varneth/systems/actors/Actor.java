@@ -100,6 +100,14 @@ public abstract class Actor <D extends ActorDefinition> {
         state.setCurrentHp(newHp);
     }
 
+    public boolean trySpendResource(int amount) {
+        if (amount < 0 || getCurrentResource() < amount) {
+            return false;
+        }
+        state.setCurrentResource(getCurrentResource() - amount);
+        return true;
+    }
+
     /** Misc **/
 
     public void gainXp(int amount) {
@@ -112,7 +120,17 @@ public abstract class Actor <D extends ActorDefinition> {
     }
 
     public void levelUp() {
+        int previousMaxHp = getMaxHp();
+        int previousMaxResource = getMaxResource();
+        int previousCurrentHp = getCurrentHp();
+        int previousCurrentResource = getCurrentResource();
         state.levelUp();
+        int newMaxHp = getMaxHp();
+        int newMaxResource = getMaxResource();
+        int adjustedCurrentHp = (int) Math.round((double) previousCurrentHp * newMaxHp / previousMaxHp);
+        int adjustedCurrentResource = (int) Math.round((double) previousCurrentResource * newMaxResource / previousMaxResource);
+        state.setCurrentHp(adjustedCurrentHp);
+        state.setCurrentResource(adjustedCurrentResource);
         System.out.println(this.getName() + " ist ein Level aufgestiegen und ist nun Level " + this.state.getLevel());
     }
 

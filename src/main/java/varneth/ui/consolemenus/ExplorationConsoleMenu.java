@@ -24,7 +24,7 @@ public class ExplorationConsoleMenu {
         if (!room.getEnemies().isEmpty()){
             System.out.print(room.getEnemies().size() + " Gegner vorhanden. ");
         }
-        if (!room.getPOIs().isEmpty()){
+        if (!room.getPOIs().isEmpty() && room.getEnemies().isEmpty()){
             System.out.print(room.getPOIs().size() + " Interaktionen vorhanden. ");
         }
         System.out.println();

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import varneth.systems.actors.ActorDefinition;
-import varneth.systems.actors.ActorState;
 import varneth.systems.actors.MainAttribute;
 import varneth.systems.actors.player.Player;
+import varneth.systems.actors.player.PlayerState;
 import varneth.ui.consolemenus.ConsoleMenuGeneral;
 import varneth.ui.enums.GameStartAction;
 
@@ -42,11 +42,12 @@ public class GameStart {
                                     2,
                                     MainAttribute.INTELLIGENCE
                             ),
-                            new ActorState(
+                            new PlayerState(
                                     50,
                                     25,
                                     1,
                                     0,
+                                    new ArrayList<>(List.of()),
                                     new ArrayList<>(List.of())
                             )
                     );

@@ -1,12 +1,14 @@
 package varneth.systems.spells;
 
 import varneth.systems.actors.MainAttribute;
+import varneth.systems.magic.MagicType;
 
 public class SkillDefinition {
 
     private final String id;
     private final String name;
     private final String description;
+    private final MagicType magicType;
     private final int baseManaCost;
     private final int baseModifier;
     private final int modifierPerLevel;
@@ -21,6 +23,7 @@ public class SkillDefinition {
             String id,
             String name,
             String description,
+            MagicType magicType,
             int baseManaCost,
             int baseModifier, int modifierPerLevel,
             int baseXpThreshold,
@@ -31,6 +34,7 @@ public class SkillDefinition {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.magicType = magicType;
         this.baseManaCost = baseManaCost;
         this.baseModifier = baseModifier;
         this.modifierPerLevel = modifierPerLevel;
@@ -44,6 +48,7 @@ public class SkillDefinition {
     public String getId() {return id;}
     public String getName() {return name;}
     public String getDescription() {return description;}
+    public MagicType getMagicType() {return magicType;}
     public int getBaseManaCost() {return baseManaCost;}
     public int getBaseModifier() {return baseModifier;}
     public int getModifierPerLevel() {return modifierPerLevel;}

@@ -1,6 +1,7 @@
 package varneth.systems.spells;
 
 import varneth.systems.actors.MainAttribute;
+import varneth.systems.magic.MagicType;
 
 public class Skill {
 
@@ -22,6 +23,8 @@ public class Skill {
     public String getId() {return def.getId();}
     public String getName() {return def.getName();}
     public String getDescription() {return def.getDescription();}
+    public MagicType getMagicType() {return def.getMagicType();}
+    public int getBaseManaCost() {return def.getBaseManaCost();}
     public int getModifier() {return def.getBaseModifier() + def.getModifierPerLevel() * state.getLevel();}
     public int getCurrentXp() {return state.getCurrentXp();}
     public int getLevel() {return state.getLevel();}

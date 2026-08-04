@@ -6,6 +6,7 @@ import java.util.List;
 
 import varneth.input.TextInput;
 import varneth.systems.actors.Actor;
+import varneth.systems.items.Item;
 import varneth.systems.spells.Skill;
 import varneth.ui.enums.GameStartAction;
 import varneth.ui.enums.MainMenuAction;
@@ -55,6 +56,10 @@ public class ConsoleMenuGeneral {
 
     public void consoleMessageSkillLearned(Skill skill, Actor actor){
         System.out.println(actor.getName() + " hat " + skill.getName() + " erlernt!");
+    }
+
+    public void consoleMessageItemReceived(Item item, Actor actor){
+        System.out.println(actor.getName() + " hat " + item.getName() + " erhalten!");
     }
 
     public void consoleMessageExperienceGranted(int xp, Actor actor){

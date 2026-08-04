@@ -4,11 +4,16 @@ package varneth.systems.combat;
 import java.util.List;
 import java.util.Optional;
 
+import varneth.engine.events.CombatantSnapshot;
+import varneth.engine.events.CombatSnapshot;
+import varneth.engine.events.CombatStateChanged;
 import varneth.engine.events.DamageDealt;
 import varneth.engine.events.EventBus;
+import varneth.systems.actors.Actor;
 import varneth.systems.actors.enemy.Enemy;
 import varneth.systems.actors.player.Player;
 import varneth.systems.reward.RewardHandler;
+import varneth.systems.spells.AvailableSpell;
 import varneth.systems.spells.Skill;
 import varneth.ui.consolemenus.CombatConsoleMenu;
 import varneth.ui.enums.CombatAction;
@@ -37,7 +42,7 @@ public class CombatScene {
     public CombatResult combatLoop(Player player, List<Enemy> enemies){
 
         CombatConsoleMenu combatMenu = new CombatConsoleMenu();
-        combatMenu.consoleMenuCombatSceneBegin(player, enemies);
+        publishCombatState(player, enemies);
         RewardHandler rewardHandler = new RewardHandler();
 
         while (true){
@@ -59,21 +64,26 @@ public class CombatScene {
                     target.recieveDamage(dmg);
                     bus.publish(new DamageDealt(player, target, dmg, null, hpBefore, target.getCurrentHp()));
                     if(target.isDead()){
-                        combatMenu.actorDied(target);
                         rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
                     }
+                    publishCombatState(player, enemies);
                     if (enemies.stream().allMatch(Enemy::isDead)){
                         return CombatResult.WON;
                     }
                 }
                 case SPELL -> {
-                    Optional<Skill> maybeSpell = combatMenu.consoleMenuSpellChooser(player.getLearnedSkills());
-                    if (maybeSpell.isEmpty()){
+                    Optional<AvailableSpell> maybeAvailableSpell =
+                            combatMenu.consoleMenuSpellChooser(player.getAvailableSpells());
+                    if (maybeAvailableSpell.isEmpty()){
                         continue;
                     }
-                    Skill spell = maybeSpell.get();
+                    AvailableSpell availableSpell = maybeAvailableSpell.get();
+                    Skill spell = availableSpell.skill();
                     Optional<Enemy> maybeTarget = combatMenu.consoleMenuTargetChooser(enemies);
                     if (maybeTarget.isEmpty()){
+                        continue;
+                    }
+                    if (!player.tryPayCastingCost(availableSpell)) {
                         continue;
                     }
                     Enemy target = maybeTarget.get();
@@ -82,9 +92,9 @@ public class CombatScene {
                     target.recieveDamage(dmg);
                     bus.publish(new DamageDealt(player, target, dmg, spell, hpBefore, target.getCurrentHp()));
                     if(target.isDead()){
-                        combatMenu.actorDied(target);
                         rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
                     }
+                    publishCombatState(player, enemies);
                     if (enemies.stream().allMatch(Enemy::isDead)){
                         return CombatResult.WON;
                     }
@@ -99,19 +109,38 @@ public class CombatScene {
             /** Enemy Combat **/
 
 
-            combatMenu.consoleMenuCombatSceneState(player, enemies);
             for (Enemy enemy : enemies) {
                 if(!enemy.isDead()) {
                     int dmg = enemy.basicAttack();
                     int hpBefore = player.getCurrentHp();
                     player.recieveDamage(dmg);
                     bus.publish(new DamageDealt(enemy, player, dmg, null, hpBefore, player.getCurrentHp()));
+                    publishCombatState(player, enemies);
                     if (player.isDead()) {
-                        combatMenu.actorDied(player);
                         return CombatResult.LOST;
                     }
                 }
             }
         }
+    }
+
+    private void publishCombatState(Player player, List<Enemy> enemies) {
+        CombatantSnapshot playerSnapshot = snapshot(player);
+        List<CombatantSnapshot> enemySnapshots = enemies.stream()
+                .map(this::snapshot)
+                .toList();
+        bus.publish(new CombatStateChanged(
+                new CombatSnapshot(playerSnapshot, enemySnapshots)
+        ));
+    }
+
+    private CombatantSnapshot snapshot(Actor<?> actor) {
+        return new CombatantSnapshot(
+                actor.getName(),
+                actor.getCurrentHp(),
+                actor.getMaxHp(),
+                actor.getCurrentResource(),
+                actor.getMaxResource()
+        );
     }
 }

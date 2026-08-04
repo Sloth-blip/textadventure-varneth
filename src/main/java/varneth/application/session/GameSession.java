@@ -20,9 +20,9 @@ import varneth.application.state.ActionOption;
 import varneth.application.state.GameMode;
 import varneth.application.state.UiState;
 import varneth.systems.actors.ActorDefinition;
-import varneth.systems.actors.ActorState;
 import varneth.systems.actors.MainAttribute;
 import varneth.systems.actors.player.Player;
+import varneth.systems.actors.player.PlayerState;
 import varneth.systems.interactables.PointOfInterestType;
 import varneth.systems.reward.Reward;
 
@@ -72,11 +72,12 @@ public class GameSession {
                 2, 
                 MainAttribute.STRENGTH
             ),
-             new ActorState(
+             new PlayerState(
                 35, 
                 12, 
                 1, 
                 0, 
+                new ArrayList<>(List.of()),
                 new ArrayList<>(List.of())
             )
         );
