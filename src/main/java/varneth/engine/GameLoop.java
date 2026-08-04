@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import varneth.engine.events.EventBus;
 import varneth.renderer.CombatConsoleNarrator;
+import varneth.renderer.RewardConsoleNarrator;
 import varneth.systems.actors.player.Player;
 import varneth.systems.combat.CombatScene;
 import varneth.systems.rooms.ExplorationPhase;
@@ -24,10 +25,11 @@ public class GameLoop {
         ConsoleMenuGeneral userInterface = new ConsoleMenuGeneral();
         EventBus bus = new EventBus();
         new CombatConsoleNarrator(bus);
+        new RewardConsoleNarrator(bus);
 
 
         var cS = new CombatScene(bus);
-        var eP = new ExplorationPhase();
+        var eP = new ExplorationPhase(bus);
 
         var testWorld = WorldBuilder.buildTestWorld();
         var currentRoom = testWorld.getStartRoom();

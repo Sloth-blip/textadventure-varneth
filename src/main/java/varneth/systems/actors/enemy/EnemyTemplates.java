@@ -27,7 +27,6 @@ public class EnemyTemplates {
                     10,
                     MainAttribute.STRENGTH,
                     new Reward(
-                            null,
                             500,
                             0
                     )
@@ -50,7 +49,6 @@ public class EnemyTemplates {
             10,
             MainAttribute.STRENGTH,
                     new Reward(
-                            null,
                             1000,
                             0
                     )

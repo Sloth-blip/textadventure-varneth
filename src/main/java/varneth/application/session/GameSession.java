@@ -78,7 +78,8 @@ public class GameSession {
                 1, 
                 0, 
                 new ArrayList<>(List.of()),
-                new ArrayList<>(List.of())
+                new ArrayList<>(List.of()),
+                0
             )
         );
 
@@ -205,6 +206,7 @@ public class GameSession {
         for (var reward : rewardBundle.getRewards()) {
 
             if (reward.getGold() > 0) {
+                player.addGold(reward.getGold());
                 inventory.add(reward.getGold() + " Gold");
             }
 
@@ -212,9 +214,8 @@ public class GameSession {
                 player.gainXp(reward.getXp());
             }
 
-            if (reward.getSkill() != null) {
-                player.addLearnedSkill(reward.getSkill());
-            }
+            reward.getSkills().forEach(player::addLearnedSkill);
+            reward.getItems().forEach(player::addItem);
         }
 
         for (String message : rewardBundle.getMessages()) {
@@ -228,6 +229,7 @@ public class GameSession {
         }
 
         if (reward.getGold() > 0) {
+            player.addGold(reward.getGold());
             inventory.add(reward.getGold() + " Gold");
             devLog.add(sourceName + ": " + reward.getGold() + " Gold erhalten");
         }
@@ -237,9 +239,13 @@ public class GameSession {
             devLog.add(sourceName + ": " + reward.getXp() + " XP erhalten");
         }
 
-        if (reward.getSkill() != null) {
-            player.addLearnedSkill(reward.getSkill());
-            devLog.add(sourceName + ": " + reward.getSkill().getName() + " erlernt");
+        for (var skill : reward.getSkills()) {
+            player.addLearnedSkill(skill);
+            devLog.add(sourceName + ": " + skill.getName() + " erlernt");
+        }
+        for (var item : reward.getItems()) {
+            player.addItem(item);
+            devLog.add(sourceName + ": " + item.getName() + " erhalten");
         }
     }
 

@@ -43,7 +43,7 @@ public class CombatScene {
 
         CombatConsoleMenu combatMenu = new CombatConsoleMenu();
         publishCombatState(player, enemies);
-        RewardHandler rewardHandler = new RewardHandler();
+        RewardHandler rewardHandler = new RewardHandler(bus);
 
         while (true){
 

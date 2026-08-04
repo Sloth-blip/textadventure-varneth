@@ -10,8 +10,9 @@ The class is responsible for:
 - evaluating combat outcomes
 - ending combat (victory, defeat, escape)
 
-At the moment, the class still contains **both game logic and console UI calls**.
-This coupling is **intentional but temporary** and will be resolved step by step as the architecture evolves.
+`CombatScene` still requests blocking player choices from `CombatConsoleMenu`.
+Combat state, damage, defeat, and reward output are event-driven. The remaining
+input coupling is temporary and can be replaced when a non-blocking UI is introduced.
 
 ---
 

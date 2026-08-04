@@ -49,9 +49,10 @@ class ActorTest {
     void experienceCanLevelActorAndKeepsRemainder() {
         Player player = createPlayer(110, 55, 1, 0);
 
-        player.gainXp(25);
+        int levelsGained = player.gainXp(25);
 
         assertEquals(2, player.getLevel());
+        assertEquals(1, levelsGained);
         assertEquals(15, player.getCurrentXp());
         assertEquals(20, player.getCurrentXpThreshold());
         assertEquals(120, player.getMaxHp());
@@ -81,7 +82,8 @@ class ActorTest {
                 level,
                 xp,
                 new ArrayList<>(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                0
         );
 
         return new Player(definition, state);

@@ -73,7 +73,7 @@ public class WorldBuilder {
                                         "Sleep tite booboo."
                                 )
                         ),
-                        new Reward(null, 0, 0)
+                        new Reward(0, 0)
                 ),
                 new PointOfInterestState(true)
         );
@@ -161,7 +161,7 @@ public class WorldBuilder {
                                     "Die Tafel ist noch genauso sarkastisch wie zuvor."
                             )
                     ),
-                    new Reward(null, 0, 0)
+                    new Reward(0, 0)
             ),
             new PointOfInterestState(true)
     );
@@ -179,7 +179,7 @@ public class WorldBuilder {
                             ),
                             List.of()
                     ),
-                    new Reward(null, 40, 15)
+                    new Reward(40, 15)
             ),
             new PointOfInterestState(false)
     );
@@ -217,7 +217,7 @@ public class WorldBuilder {
                             ),
                             List.of()
                     ),
-                    new Reward(null, 70, 25)
+                    new Reward(70, 25)
             ),
             new PointOfInterestState(false)
     );
@@ -238,7 +238,7 @@ public class WorldBuilder {
                                     "Ein kurzer Moment der Ruhe kann nicht schaden."
                             )
                     ),
-                    new Reward(null, 0, 0)
+                    new Reward(0, 0)
             ),
             new PointOfInterestState(true)
     );
@@ -258,7 +258,7 @@ public class WorldBuilder {
                                     "Die Kratzspuren machen jetzt nicht mehr Sinn als zuvor."
                             )
                     ),
-                    new Reward(null, 20, 0)
+                    new Reward(20, 0)
             ),
             new PointOfInterestState(true)
     );
@@ -276,7 +276,7 @@ public class WorldBuilder {
                             ),
                             List.of()
                     ),
-                    new Reward(null, 120, 50)
+                    new Reward(120, 50)
             ),
             new PointOfInterestState(false)
     );
@@ -296,7 +296,7 @@ public class WorldBuilder {
                                     "Mehr gibt der Bericht nicht her."
                             )
                     ),
-                    new Reward(null, 60, 0)
+                    new Reward(60, 0)
             ),
             new PointOfInterestState(true)
     );
@@ -316,7 +316,7 @@ public class WorldBuilder {
                                     "Die Feuerstelle ist kalt, aber der Ort bleibt ruhig."
                             )
                     ),
-                    new Reward(null, 0, 0)
+                    new Reward(0, 0)
             ),
             new PointOfInterestState(true)
     );

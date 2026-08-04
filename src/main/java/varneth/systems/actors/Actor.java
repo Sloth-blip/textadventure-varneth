@@ -110,13 +110,19 @@ public abstract class Actor <D extends ActorDefinition> {
 
     /** Misc **/
 
-    public void gainXp(int amount) {
+    public int gainXp(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("XP amount must not be negative");
+        }
         int newXp = getCurrentXp() + amount;
         state.setCurrentXp(newXp);
+        int levelsGained = 0;
         while (getCurrentXp() >= getCurrentXpThreshold()) {
             state.setCurrentXp(getCurrentXp() - getCurrentXpThreshold());
             levelUp();
+            levelsGained++;
         }
+        return levelsGained;
     }
 
     public void levelUp() {
@@ -131,7 +137,6 @@ public abstract class Actor <D extends ActorDefinition> {
         int adjustedCurrentResource = (int) Math.round((double) previousCurrentResource * newMaxResource / previousMaxResource);
         state.setCurrentHp(adjustedCurrentHp);
         state.setCurrentResource(adjustedCurrentResource);
-        System.out.println(this.getName() + " ist ein Level aufgestiegen und ist nun Level " + this.state.getLevel());
     }
 
     public void takeRest() {

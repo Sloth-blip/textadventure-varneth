@@ -24,8 +24,10 @@ public class Player extends Actor<ActorDefinition> {
     public boolean isDead() {return getCurrentHp() == 0;}
 
     public List<Item> getInventory() {return List.copyOf(playerState.getInventory());}
+    public int getGold() {return playerState.getGold();}
 
     public void addItem(Item item) {playerState.addItem(item);}
+    public void addGold(int amount) {playerState.addGold(amount);}
 
     public List<AvailableSpell> getAvailableSpells() {
         List<AvailableSpell> availableSpells = new ArrayList<>();

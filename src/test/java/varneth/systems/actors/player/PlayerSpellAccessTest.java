@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import varneth.engine.events.EventBus;
 import varneth.systems.actors.ActorDefinition;
 import varneth.systems.actors.MainAttribute;
 import varneth.systems.items.MagicCrystal;
@@ -26,7 +27,7 @@ class PlayerSpellAccessTest {
         Player player = createPlayer(25);
         MagicCrystal crystal = MagicCrystalTemplates.get("fire_crystal");
 
-        new RewardHandler().grantRewards(new Reward(crystal), player);
+        new RewardHandler(new EventBus()).grantRewards(new Reward(crystal), player);
 
         assertEquals(List.of(crystal), player.getInventory());
         assertTrue(player.getLearnedSkills().isEmpty());
@@ -96,7 +97,8 @@ class PlayerSpellAccessTest {
                 1,
                 0,
                 new ArrayList<>(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                0
         );
         return new Player(definition, state);
     }

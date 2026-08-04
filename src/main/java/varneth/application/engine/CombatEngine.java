@@ -197,9 +197,13 @@ public class CombatEngine {
                 rewardMessages.add(reward.getXp() + " Erfahrung erhalten.");
             }
 
-            if(reward.getSkill() != null) {
-                devLog.add("Reward vorbereitet: Skill " + reward.getSkill().getName());
-                rewardMessages.add(reward.getSkill().getName() + " erlernt!");
+            for (var skill : reward.getSkills()) {
+                devLog.add("Reward vorbereitet: Skill " + skill.getName());
+                rewardMessages.add(skill.getName() + " erlernt!");
+            }
+            for (var item : reward.getItems()) {
+                devLog.add("Reward vorbereitet: Item " + item.getName());
+                rewardMessages.add(item.getName() + " erhalten!");
             }
             room.getEnemies().remove(enemy);
         }

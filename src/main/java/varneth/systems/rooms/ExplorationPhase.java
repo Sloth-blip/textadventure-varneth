@@ -3,6 +3,7 @@ package varneth.systems.rooms;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import varneth.engine.events.EventBus;
 
 import varneth.systems.actors.player.Player;
 import varneth.systems.interactables.PointOfInterest;
@@ -13,7 +14,11 @@ import varneth.ui.enums.ExplorationAction;
 
 public class ExplorationPhase {
 
-    RewardHandler rewardHandler = new RewardHandler();
+    private final RewardHandler rewardHandler;
+
+    public ExplorationPhase(EventBus bus) {
+        rewardHandler = new RewardHandler(bus);
+    }
 
     // Flag für besuchte Räume
     List<Room> roomsVisited = new ArrayList<>();

@@ -44,3 +44,16 @@ layer needs and does not expose mutable actors.
 `CombatConsoleNarrator` renders those state changes for the console, while
 `CombatConsoleMenu` remains responsible for player input. A later graphical UI
 can subscribe to the same state event without moving combat rules into the UI.
+
+## Reward pipeline
+
+`Reward` is immutable content data containing lists of skills and items plus XP
+and gold. Empty lists represent absent reward types; reward content does not use
+`null` sentinels. Gold belongs to `PlayerState` alongside inventory and other
+runtime state.
+
+`RewardHandler` applies a complete reward to the player and publishes one
+immutable `RewardGranted` event describing the values actually granted,
+including aggregated level-ups. It contains no presentation code.
+`RewardConsoleNarrator` turns that event into console text. Other presentation
+layers can subscribe without duplicating reward rules.

@@ -48,7 +48,8 @@ public class GameStart {
                                     1,
                                     0,
                                     new ArrayList<>(List.of()),
-                                    new ArrayList<>(List.of())
+                                    new ArrayList<>(List.of()),
+                                    0
                             )
                     );
                     gameloop.gameLoopStart(player);
