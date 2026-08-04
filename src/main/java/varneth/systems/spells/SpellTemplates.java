@@ -8,8 +8,9 @@ public class SpellTemplates {
 
     private static final SkillDefinition PEBBLES =
             new SkillDefinition(
-                  "pebbles",
+                    "pebbles",
                     "Steinschleuder",
+                    "Ein einfacher Erdzauber, der lose Steine weckt und mit arkaner Kraft auf sein Ziel schleudert.",
                     5,
                     10,
                     2,

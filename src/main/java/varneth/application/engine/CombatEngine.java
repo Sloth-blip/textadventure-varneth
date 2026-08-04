@@ -104,7 +104,7 @@ public class CombatEngine {
         actions.add(new ActionOption("BASIC_ATTACK", "Normaler Angriff"));
 
         for (Skill skill : player.getLearnedSkills()) {
-            actions.add(new ActionOption("SPELL_" + skill.getName(), skill.getName() + "\n" + skill.getDescription()));    
+            actions.add(new ActionOption("SPELL_" + skill.getId(), skill.getName() + "\n" + skill.getDescription()));
         }
     }
 
@@ -148,7 +148,7 @@ public class CombatEngine {
         String skillId = intent.getValue().substring("SPELL_".length());
 
         for (Skill skill : player.getLearnedSkills()) {
-            if (skillId.equals(skill.getName())){
+            if (skillId.equals(skill.getId())){
                 return player.calculateDamageDealtWithSkill(skill);
             }
         }

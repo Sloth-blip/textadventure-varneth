@@ -53,7 +53,7 @@ The long-term idea is to keep the backend responsible for game logic and state, 
 
 ## Tech stack
 
-- Java 21
+- Java 17
 - Gradle
 - Vue.js
 - modular package structure

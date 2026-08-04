@@ -19,6 +19,7 @@ public class Skill {
     @Override
     public String toString(){return def.toString();}
 
+    public String getId() {return def.getId();}
     public String getName() {return def.getName();}
     public String getDescription() {return def.getDescription();}
     public int getModifier() {return def.getBaseModifier() + def.getModifierPerLevel() * state.getLevel();}

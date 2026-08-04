@@ -44,8 +44,8 @@ Core liefert Desktop und Android dieselben Inhalte, Spielstände und Regeln.
 - **UI:** LibGDX Scene2D für Screens, Layout, Eingabe und Overlays.
 - **Content/Saves:** JSON hinter kleinen Lade- und Speicher-Schnittstellen.
 
-Der aktuelle Build verwendet noch Java 21. Die Umstellung auf Java 17 erfolgt
-zusammen mit der LibGDX-Migration. Dann wird die aktuelle stabile LibGDX-Version
+Der Build verwendet bereits Java 17 als gemeinsame zukünftige Basis für Desktop
+und Android. Bei der Migration wird die dann aktuelle stabile LibGDX-Version
 verwendet, keine Snapshot-Version.
 
 ```text
@@ -129,8 +129,7 @@ fortgesetzt wird und ungültige Storydaten automatisiert erkannt werden.
 
 ### 3. LibGDX-Desktop-Grundgerüst
 
-- Gradle in `core` und `lwjgl3` aufteilen und gemeinsamen Code auf Java 17
-  umstellen.
+- Gradle in `core` und `lwjgl3` aufteilen.
 - Scene2D-Screens für Start, Geschichte und einfache Menüs erstellen.
 - Portrait-orientierten virtuellen Viewport skalierbar umsetzen.
 - Storytext scrollbar und Entscheidungen per Maus sowie Tastatur bedienbar machen.

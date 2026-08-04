@@ -26,13 +26,14 @@ source of truth for the intended journey:
 - story-unlocked spells that level up and are cast through a free-drawn rune
 
 Keep current and target architecture distinct. The repository currently uses
-Java 21 and is not yet a LibGDX multi-module project. Java 17, LibGDX, the `core` /
+Java 17 and is not yet a LibGDX multi-module project. LibGDX, the `core` /
 `lwjgl3` split, and Android are roadmap targets, not current repository facts.
 
 ## Toolchain and commands
 
-- Java 21, Gradle wrapper, application main class `varneth.Main`.
+- Java 17, Gradle wrapper, application main class `varneth.Main`.
 - Console game: `./gradlew run`
+- Demo console: `./gradlew run --args=demo`
 - Web backend on port 8080: `./gradlew run --args=web`
 - Frontend requires Node `^20.19.0 || >=22.12.0`.
 - Install frontend dependencies: `cd frontend && npm ci`
@@ -40,9 +41,8 @@ Java 21 and is not yet a LibGDX multi-module project. Java 17, LibGDX, the `core
 - Production frontend build: `cd frontend && npm run build`
 - Backend verification: `./gradlew build`
 
-There are currently no Java or frontend test files and no frontend lint/test
-scripts. For a change, run the relevant builds and add focused tests if a test
-framework is introduced as part of the task.
+Java core tests use JUnit Jupiter under `src/test/java`. The frontend still has
+no lint/test scripts. Run the checks relevant to every changed area.
 
 ## Architecture
 
@@ -86,6 +86,23 @@ The demo Vue 3 frontend lives in `frontend/`. `App.vue` composes the screen,
 `composables/useMapView.js` converts backend map data into renderable layout data.
 If a task explicitly touches the demo, keep component state presentational and
 treat the returned `UiState` as the source of truth for that demo path.
+
+## Working with the author
+
+This repository is also a learning project for its author. Work as a collaborative
+pair programmer, not as a silent implementation service:
+
+- Explain the relevant existing flow before changing it.
+- Keep implementation steps small enough to review and understand.
+- State the reason and tradeoff behind architectural decisions in plain language.
+- Do not perform broad refactors or jump ahead across roadmap milestones without
+  discussing them first.
+- After diagnostics or a completed slice, pause with concrete findings and choose
+  the next change together.
+- Prefer helping the author implement or reason through a subsystem when they want
+  to learn it; only take over complete implementation when explicitly requested.
+- Call out bugs and risks separately from proposed fixes so the author can
+  participate in the decision.
 
 ## Working conventions
 

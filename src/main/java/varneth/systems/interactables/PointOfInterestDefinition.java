@@ -33,9 +33,13 @@ public class PointOfInterestDefinition {
     protected String getName() {return name;}
     protected PointOfInterestType getType() {return type;}
     protected List<List<String>> getDialogsChunks() {return dialogChunks;}
-    protected List<String> getDialogChunk(boolean isUsed){
-        if (!isUsed){return this.dialogChunks.getFirst();}
-        else {return this.dialogChunks.getLast();}
+    protected List<String> getDialogChunk(boolean isUsed) {
+        if (dialogChunks.isEmpty()) {
+            return List.of();
+        }
+
+        int chunkIndex = isUsed ? dialogChunks.size() - 1 : 0;
+        return dialogChunks.get(chunkIndex);
     }
     protected Reward getRewards() {return rewards;}
 
