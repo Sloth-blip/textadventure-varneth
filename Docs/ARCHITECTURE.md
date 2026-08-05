@@ -34,13 +34,18 @@ The first inventory slice follows the same split:
 `AvailableSpell` is derived from learned spells, current player resource, and
 usable inventory crystals. It is a transient combat option and is not persistent state.
 
-## Inventory presentation boundary
+## Inventory and player-status presentation boundary
 
 `ExplorationAction.INVENTORY` is a read-only request handled by `GameLoop`.
 `InventoryConsoleRenderer` reads the player's gold and inventory and renders generic
 item identity and lore. Type-specific display details such as a crystal's magic
 type and current charge remain presentation concerns; the renderer does not
 consume, remove, equip, or otherwise mutate items.
+
+`ExplorationAction.PLAYER_STATUS` follows the same read-only boundary.
+`PlayerStatusConsoleRenderer` displays progress, current and maximum resources,
+and the final attributes returned by `Player`; it does not repeat level or
+attribute calculations in the presentation layer.
 
 A later graphical inventory replaces this renderer while continuing to use the
 authoritative item instances and state from the game core.

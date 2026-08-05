@@ -6,6 +6,7 @@ public enum ExplorationAction {
     ROOMDESCRIPTION("RaumIntro"),
     ROOMNAVIGATION("Raumnavigation"),
     INVENTORY("Inventar"),
+    PLAYER_STATUS("Status"),
     MAINMENU("Hauptmenü");
 
     public final String displayName;

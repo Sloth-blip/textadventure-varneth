@@ -59,6 +59,10 @@ public class ExplorationConsoleMenu {
         actions.add(ExplorationAction.INVENTORY);
         menuOption++;
 
+        System.out.println(menuOption + ".: " + ExplorationAction.PLAYER_STATUS);
+        actions.add(ExplorationAction.PLAYER_STATUS);
+        menuOption++;
+
         System.out.println(menuOption + ".: " + ExplorationAction.MAINMENU);
         actions.add(ExplorationAction.MAINMENU);
         menuOption++;

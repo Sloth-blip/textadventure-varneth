@@ -9,6 +9,7 @@ import varneth.engine.events.EventBus;
 import varneth.renderer.CombatConsoleNarrator;
 import varneth.renderer.CrystalConsoleNarrator;
 import varneth.renderer.InventoryConsoleRenderer;
+import varneth.renderer.PlayerStatusConsoleRenderer;
 import varneth.renderer.RewardConsoleNarrator;
 import varneth.renderer.SkillProgressConsoleNarrator;
 import varneth.systems.actors.player.Player;
@@ -32,6 +33,7 @@ public class GameLoop {
         new RewardConsoleNarrator(bus);
         new SkillProgressConsoleNarrator(bus);
         InventoryConsoleRenderer inventoryRenderer = new InventoryConsoleRenderer();
+        PlayerStatusConsoleRenderer playerStatusRenderer = new PlayerStatusConsoleRenderer();
 
 
         var cS = new CombatScene(bus);
@@ -69,6 +71,7 @@ public class GameLoop {
                     }
                 }
                 case INVENTORY -> inventoryRenderer.render(player);
+                case PLAYER_STATUS -> playerStatusRenderer.render(player);
                 case MAINMENU -> {
                     MainMenuAction mainMenuChoice = userInterface.consoleMenuMainMenu();
                     switch (mainMenuChoice){
