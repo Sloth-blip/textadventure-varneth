@@ -14,7 +14,7 @@ public class RewardConsoleNarrator {
             System.out.println(event.recipientName() + " hat " + skillName + " erlernt!");
         }
         for (String itemName : event.receivedItemNames()) {
-            System.out.println(event.recipientName() + " hat " + itemName + " erhalten!");
+            System.out.println(event.recipientName() + " erhält: " + itemName + ".");
         }
         if (event.experience() > 0) {
             System.out.println(

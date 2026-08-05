@@ -30,25 +30,44 @@ The first inventory slice follows the same split:
   and maximum charge.
 - `MagicCrystalState` contains the remaining charge.
 - `MagicCrystal` validates compatibility and changes its charge.
+- `EquipmentDefinition` contains stable identity, display text, slot, and
+  attribute modifiers.
+- `Equipment` currently has no item-local mutable data, so it does not carry a
+  fake empty state object. If durability or upgrades arrive, they belong in a
+  dedicated `EquipmentState`.
+- The mutable equipped relationship belongs to `PlayerState`, which references
+  owned equipment by slot.
 
 `AvailableSpell` is derived from learned spells, current player resource, and
 usable inventory crystals. It is a transient combat option and is not persistent state.
 
-## Inventory and player-status presentation boundary
+## Inventory, equipment, and player-status boundary
 
-`ExplorationAction.INVENTORY` is a read-only request handled by `GameLoop`.
-`InventoryConsoleRenderer` reads the player's gold and inventory and renders generic
-item identity and lore. Type-specific display details such as a crystal's magic
-type and current charge remain presentation concerns; the renderer does not
-consume, remove, equip, or otherwise mutate items.
+`ExplorationAction.INVENTORY` displays the current inventory and can collect an
+optional equipment selection. `InventoryConsoleRenderer` only renders generic
+item identity and lore plus type-specific presentation details. It never changes
+item or player state. `EquipmentConsoleMenu` also contains no equipment rules;
+it returns the selected owned item to `GameLoop`.
 
-`ExplorationAction.PLAYER_STATUS` follows the same read-only boundary.
+`EquipmentHandler` owns the equip/unequip toggle, delegates slot mutation to
+`Player`, and publishes an immutable `EquipmentChanged` result.
+`PlayerState` is the single source of truth for the `EquipmentSlot -> Equipment`
+relationship. Equipment has no duplicate `equipped` flag. Equipping another
+item in an occupied slot replaces the previous item rather than stacking both.
+
+`Player` adds modifiers from currently equipped items to its final Strength,
+Intelligence, and Wisdom getters. Combat, spell damage, crystal efficiency, and
+presentation therefore consume the same values. HP, resource, defense, and
+durability modifiers are outside this first equipment slice.
+
+`ExplorationAction.PLAYER_STATUS` remains read-only.
 `PlayerStatusConsoleRenderer` displays progress, current and maximum resources,
-and the final attributes returned by `Player`; it does not repeat level or
-attribute calculations in the presentation layer.
+final attributes, and all equipment slots; it does not repeat calculations in
+the presentation layer.
 
-A later graphical inventory replaces this renderer while continuing to use the
-authoritative item instances and state from the game core.
+A later graphical inventory and status screen replace these console components
+while continuing to use the authoritative item instances and state from the
+game core.
 
 ## Combat presentation boundary
 

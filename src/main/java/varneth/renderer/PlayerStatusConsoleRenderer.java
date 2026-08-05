@@ -1,6 +1,10 @@
 package varneth.renderer;
 
+import java.util.Map;
+
 import varneth.systems.actors.player.Player;
+import varneth.systems.items.Equipment;
+import varneth.systems.items.EquipmentSlot;
 
 public class PlayerStatusConsoleRenderer {
 
@@ -23,5 +27,15 @@ public class PlayerStatusConsoleRenderer {
         );
         System.out.println("Hauptattribut: " + player.getMainAttribute());
         System.out.println("Gold: " + player.getGold());
+        renderEquipment(player.getEquippedItems());
+    }
+
+    private void renderEquipment(Map<EquipmentSlot, Equipment> equippedItems) {
+        System.out.println("Ausrüstung:");
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Equipment equipment = equippedItems.get(slot);
+            String itemName = equipment == null ? "-" : equipment.getName();
+            System.out.println("   " + slot + ": " + itemName);
+        }
     }
 }

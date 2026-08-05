@@ -13,12 +13,15 @@ import varneth.systems.actors.ActorDefinition;
 import varneth.systems.actors.MainAttribute;
 import varneth.systems.actors.player.Player;
 import varneth.systems.actors.player.PlayerState;
+import varneth.systems.items.Equipment;
+import varneth.systems.items.EquipmentTemplates;
+import varneth.systems.items.Item;
 
 class PlayerStatusConsoleRendererTest {
 
     @Test
-    void rendersCurrentProgressAndCalculatedAttributes() {
-        Player player = createPlayer();
+    void rendersCurrentProgressCalculatedAttributesAndEmptySlots() {
+        Player player = createPlayer(List.of());
 
         String rendered = render(player);
 
@@ -28,6 +31,21 @@ class PlayerStatusConsoleRendererTest {
         assertTrue(rendered.contains("Stärke: 12 | Intelligenz: 20 | Weisheit: 11"));
         assertTrue(rendered.contains("Hauptattribut: Intelligenz"));
         assertTrue(rendered.contains("Gold: 7"));
+        assertTrue(rendered.contains("Haupthand: -"));
+        assertTrue(rendered.contains("Körper: -"));
+        assertTrue(rendered.contains("Accessoire: -"));
+    }
+
+    @Test
+    void rendersEquippedItemAndFinalModifiedAttributes() {
+        Equipment focus = EquipmentTemplates.get("earth_focus");
+        Player player = createPlayer(List.of(focus));
+        player.equip(focus);
+
+        String rendered = render(player);
+
+        assertTrue(rendered.contains("Stärke: 12 | Intelligenz: 22 | Weisheit: 12"));
+        assertTrue(rendered.contains("Haupthand: Erdmagischer Fokus"));
     }
 
     private String render(Player player) {
@@ -44,7 +62,7 @@ class PlayerStatusConsoleRendererTest {
         return output.toString(StandardCharsets.UTF_8);
     }
 
-    private Player createPlayer() {
+    private Player createPlayer(List<Item> inventory) {
         return new Player(
                 new ActorDefinition(
                         "Arenn",
@@ -62,7 +80,7 @@ class PlayerStatusConsoleRendererTest {
                         1,
                         0,
                         List.of(),
-                        List.of(),
+                        inventory,
                         7
                 )
         );

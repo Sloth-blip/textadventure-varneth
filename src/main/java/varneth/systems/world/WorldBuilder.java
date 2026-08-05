@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import varneth.systems.actors.enemy.EnemyTemplates;
+import varneth.systems.items.EquipmentTemplates;
 import varneth.systems.items.MagicCrystalTemplates;
 import varneth.systems.interactables.PointOfInterest;
 import varneth.systems.interactables.PointOfInterestDefinition;
@@ -36,7 +37,12 @@ public class WorldBuilder {
                                         "Still very booky"
                                 )
                         ),
-                        new Reward(SpellTemplates.get("pebbles"), 0, 0)
+                        new Reward(
+                                List.of(SpellTemplates.get("pebbles")),
+                                List.of(EquipmentTemplates.get("earth_focus")),
+                                0,
+                                0
+                        )
 
                 ),
                 new PointOfInterestState(true)

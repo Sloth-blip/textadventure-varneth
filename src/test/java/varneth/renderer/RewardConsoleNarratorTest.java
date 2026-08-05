@@ -38,7 +38,7 @@ class RewardConsoleNarratorTest {
 
         String rendered = output.toString(StandardCharsets.UTF_8);
         assertTrue(rendered.contains("Arenn hat Steinschleuder erlernt!"));
-        assertTrue(rendered.contains("Arenn hat Feuermagiekristall erhalten!"));
+        assertTrue(rendered.contains("Arenn erhält: Feuermagiekristall."));
         assertTrue(rendered.contains("Arenn hat 500 Erfahrung erhalten!"));
         assertTrue(rendered.contains("Arenn hat 15 Gold erhalten!"));
         assertTrue(rendered.contains("Arenn ist 4 Level aufgestiegen und ist nun Level 5"));

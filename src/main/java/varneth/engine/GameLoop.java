@@ -8,16 +8,19 @@ import java.util.Optional;
 import varneth.engine.events.EventBus;
 import varneth.renderer.CombatConsoleNarrator;
 import varneth.renderer.CrystalConsoleNarrator;
+import varneth.renderer.EquipmentConsoleNarrator;
 import varneth.renderer.InventoryConsoleRenderer;
 import varneth.renderer.PlayerStatusConsoleRenderer;
 import varneth.renderer.RewardConsoleNarrator;
 import varneth.renderer.SkillProgressConsoleNarrator;
 import varneth.systems.actors.player.Player;
+import varneth.systems.items.EquipmentHandler;
 import varneth.systems.combat.CombatScene;
 import varneth.systems.rooms.ExplorationPhase;
 import varneth.systems.rooms.Room;
 import varneth.systems.world.WorldBuilder;
 import varneth.ui.consolemenus.ConsoleMenuGeneral;
+import varneth.ui.consolemenus.EquipmentConsoleMenu;
 import varneth.ui.enums.ExplorationAction;
 import varneth.ui.enums.MainMenuAction;
 
@@ -30,10 +33,13 @@ public class GameLoop {
         EventBus bus = new EventBus();
         new CombatConsoleNarrator(bus);
         new CrystalConsoleNarrator(bus);
+        new EquipmentConsoleNarrator(bus);
         new RewardConsoleNarrator(bus);
         new SkillProgressConsoleNarrator(bus);
         InventoryConsoleRenderer inventoryRenderer = new InventoryConsoleRenderer();
         PlayerStatusConsoleRenderer playerStatusRenderer = new PlayerStatusConsoleRenderer();
+        EquipmentConsoleMenu equipmentMenu = new EquipmentConsoleMenu();
+        EquipmentHandler equipmentHandler = new EquipmentHandler(bus);
 
 
         var cS = new CombatScene(bus);
@@ -70,7 +76,12 @@ public class GameLoop {
                         currentRoom = maybeNextRoom.get();
                     }
                 }
-                case INVENTORY -> inventoryRenderer.render(player);
+                case INVENTORY -> {
+                    inventoryRenderer.render(player);
+                    equipmentMenu.chooseEquipment(player).ifPresent(
+                            equipment -> equipmentHandler.toggle(player, equipment)
+                    );
+                }
                 case PLAYER_STATUS -> playerStatusRenderer.render(player);
                 case MAINMENU -> {
                     MainMenuAction mainMenuChoice = userInterface.consoleMenuMainMenu();

@@ -13,6 +13,8 @@ import varneth.systems.actors.ActorDefinition;
 import varneth.systems.actors.MainAttribute;
 import varneth.systems.actors.player.Player;
 import varneth.systems.actors.player.PlayerState;
+import varneth.systems.items.Equipment;
+import varneth.systems.items.EquipmentTemplates;
 import varneth.systems.items.Item;
 import varneth.systems.items.MagicCrystal;
 import varneth.systems.items.MagicCrystalTemplates;
@@ -40,6 +42,20 @@ class InventoryConsoleRendererTest {
         assertTrue(rendered.contains("1. Feuermagiekristall"));
         assertTrue(rendered.contains(crystal.getDescription()));
         assertTrue(rendered.contains("Magieart: Feuer | Ladung: 4/10"));
+    }
+
+    @Test
+    void rendersEquipmentSlotBonusesAndEquippedState() {
+        Equipment focus = EquipmentTemplates.get("earth_focus");
+        Player player = createPlayer(0, List.of(focus));
+        player.equip(focus);
+
+        String rendered = render(player);
+
+        assertTrue(rendered.contains("1. Erdmagischer Fokus"));
+        assertTrue(rendered.contains(focus.getDescription()));
+        assertTrue(rendered.contains("Slot: Haupthand | Ausgerüstet"));
+        assertTrue(rendered.contains("Boni: +2 Intelligenz, +1 Weisheit"));
     }
 
     private String render(Player player) {
