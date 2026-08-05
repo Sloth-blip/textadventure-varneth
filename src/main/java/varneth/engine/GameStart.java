@@ -9,6 +9,7 @@ import varneth.systems.actors.ActorDefinition;
 import varneth.systems.actors.MainAttribute;
 import varneth.systems.actors.player.Player;
 import varneth.systems.actors.player.PlayerState;
+import varneth.systems.world.WorldBuilder;
 import varneth.ui.consolemenus.ConsoleMenuGeneral;
 import varneth.ui.enums.GameStartAction;
 
@@ -52,7 +53,9 @@ public class GameStart {
                                     0
                             )
                     );
-                    gameloop.gameLoopStart(player);
+                    var world = WorldBuilder.buildTestWorld();
+                    var gameState = GameState.startNew(player, world);
+                    gameloop.gameLoopStart(gameState);
                 }
                 case LOAD -> {
                     System.out.println("ToDo");

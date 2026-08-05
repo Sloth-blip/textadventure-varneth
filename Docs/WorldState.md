@@ -1,69 +1,59 @@
 # WorldBuilder / WorldState
 
-This document describes the responsibilities of `WorldBuilder` and `WorldState`.
+This document describes the responsibilities of `WorldBuilder`, `WorldState`,
+and their relationship to the active core's central `GameState`.
 
-Together, they define how a concrete game world is created and how its current runtime state is represented.
+## WorldBuilder
 
----
+`WorldBuilder` constructs development worlds. It creates rooms, enemies, points
+of interest, rewards, and room connections, then returns a runnable `WorldState`.
 
-# WorldBuilder
+It is responsible for content assembly, not exploration/combat rules, UI,
+persistence, or deciding which room is currently active.
 
-## Purpose
-
-`WorldBuilder` is responsible for constructing a concrete game world.
-
-It creates instances of:
-
-- rooms
-- enemies
-- interactables (points of interest)
-- connections between rooms
-
-At the moment, the builder mainly encapsulates **test and development worlds** and serves as the central place for trying out gameplay mechanics.
-
----
-
-## Responsibilities
-
-### WorldBuilder is responsible for:
-
-- creating a runnable world (`WorldState`)
-- placing interactables in rooms
-- spawning enemy instances
-- connecting rooms
-
-### WorldBuilder is not responsible for:
-
-- game logic (exploration, combat)
-- UI or presentation
-- persistent storage
-- rule decisions
-
----
-
-## Current implementation
-
-### `buildTestWorld()`
+The current builders are:
 
 ```java
 public static WorldState buildTestWorld();
+public static WorldState buildTestWorldTwo();
 ```
+
+They remain hard-coded development content until the data-driven story milestone
+moves content into validated JSON.
 
 ## WorldState
 
-## Purpose
-
-`WorldState` represents the current state of the entire game world.
-
-It acts as a central object for:
-
- - navigation
- - phase control
- - future save/load mechanics
+`WorldState` owns the canonical runtime room instances of one world:
 
 ```java
 public class WorldState {
-    private final RoomStateTest startRoom;
-    private final List<RoomStateTest> allRooms;
+    private final Room startRoom;
+    private final List<Room> allRooms;
 }
 ```
+
+It validates that:
+
+- the start room is one of its canonical room instances
+- every room has a unique stable ID
+
+`getRoomById(String)` resolves navigation and restored IDs back to the canonical
+mutable `Room` instance. The exposed room list cannot be structurally modified;
+the contained rooms still own their mutable `RoomState`.
+
+Despite its historical name, `WorldState` is not the complete running game. It
+does not own the player, current-room selection, visited-room progress, phase
+control, or UI state.
+
+## GameState relationship
+
+The active `GameStart -> GameLoop` path creates one central `GameState` from a
+`Player` and `WorldState`. `GameState` stores the current room as a stable ID and
+resolves it through `WorldState`; it never stores a second detached room copy.
+
+`GameState` also owns visited room IDs, so first-visit dialog state can later be
+saved and restored. `ExplorationPhase` receives only whether the current entry
+is a first visit and keeps no persistent room-progress collection of its own.
+
+The demo path's `ExplorationSessionData` remains separate and frozen. It is not
+the authoritative state model for renewed product work.

@@ -1,6 +1,5 @@
 package varneth.systems.rooms;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import varneth.engine.events.EventBus;
@@ -20,18 +19,13 @@ public class ExplorationPhase {
         rewardHandler = new RewardHandler(bus);
     }
 
-    // Flag für besuchte Räume
-    List<Room> roomsVisited = new ArrayList<>();
-
     ExplorationConsoleMenu explorationConsoleMenu = new ExplorationConsoleMenu();
 
-    public ExplorationAction explorationPhase(Room room) {
+    public ExplorationAction explorationPhase(Room room, boolean firstVisit) {
+        System.out.println(room.getRoomDescription());
 
-            System.out.println(room.getRoomDescription());
-
-        if(!roomsVisited.contains(room)){
+        if(firstVisit) {
             explorationConsoleMenu.consoleMenuDisplayRoomDialog(room.getRoomDialogChunks());
-            roomsVisited.add(room);
         }
 
         explorationConsoleMenu.consoleMenuExplorationEntered(room);

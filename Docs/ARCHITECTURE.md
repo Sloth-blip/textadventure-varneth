@@ -7,7 +7,22 @@ The `GameLoop` acts as the central coordinator for the main gameplay phases:
 - `CombatScene`
 
 Game logic produces results and passes them back to the `GameLoop`.
-The `GameLoop` can then forward them to the UI for presentation and decide how the game should continue.
+The `GameLoop` can then forward them to the UI for presentation and decide how
+the game should continue.
+
+## Running game state
+
+`GameStart` creates the player and world, then combines them in one
+`GameState`. `GameLoop` receives that state instead of constructing a second
+world or keeping the current room as independent mutable state.
+
+`GameState` owns the player, canonical `WorldState`, stable current-room ID, and
+visited-room IDs. `getCurrentRoom()` always resolves the ID through `WorldState`.
+This preserves one mutable `Room` instance per ID and provides the first explicit
+boundary for future save data.
+
+The loop's temporary `running` flag and presentation objects are control/UI
+state and are deliberately not part of a persisted game state.
 
 ## Definition - State - Instance
 

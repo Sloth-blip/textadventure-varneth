@@ -18,7 +18,6 @@ import varneth.systems.items.EquipmentHandler;
 import varneth.systems.combat.CombatScene;
 import varneth.systems.rooms.ExplorationPhase;
 import varneth.systems.rooms.Room;
-import varneth.systems.world.WorldBuilder;
 import varneth.ui.consolemenus.ConsoleMenuGeneral;
 import varneth.ui.consolemenus.EquipmentConsoleMenu;
 import varneth.ui.enums.ExplorationAction;
@@ -27,7 +26,7 @@ import varneth.ui.enums.MainMenuAction;
 public class GameLoop {
 
 
-    public void gameLoopStart(Player player) {
+    public void gameLoopStart(GameState gameState) {
 
         ConsoleMenuGeneral userInterface = new ConsoleMenuGeneral();
         EventBus bus = new EventBus();
@@ -40,20 +39,18 @@ public class GameLoop {
         PlayerStatusConsoleRenderer playerStatusRenderer = new PlayerStatusConsoleRenderer();
         EquipmentConsoleMenu equipmentMenu = new EquipmentConsoleMenu();
         EquipmentHandler equipmentHandler = new EquipmentHandler(bus);
-
+        Player player = gameState.getPlayer();
 
         var cS = new CombatScene(bus);
         var eP = new ExplorationPhase(bus);
-
-        var testWorld = WorldBuilder.buildTestWorld();
-        var currentRoom = testWorld.getStartRoom();
 
         boolean running = true;
 
         while (running) {
 
-
-            ExplorationAction nextStep = eP.explorationPhase(currentRoom);
+            Room currentRoom = gameState.getCurrentRoom();
+            boolean firstVisit = gameState.markCurrentRoomVisited();
+            ExplorationAction nextStep = eP.explorationPhase(currentRoom, firstVisit);
 
             switch (nextStep){
                 case COMBAT -> {
@@ -73,7 +70,7 @@ public class GameLoop {
                 case ROOMNAVIGATION -> {
                     Optional<Room> maybeNextRoom = eP.chooseNextRoom(currentRoom);
                     if (maybeNextRoom.isPresent()) {
-                        currentRoom = maybeNextRoom.get();
+                        gameState.enterRoom(maybeNextRoom.get().getRoomId());
                     }
                 }
                 case INVENTORY -> {

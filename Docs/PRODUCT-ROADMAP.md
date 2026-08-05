@@ -178,6 +178,21 @@ werden kann.
 Unterbrechungen ohne Fortschrittsverlust übersteht und ein signiertes AAB die
 aktuellen Play-Console-Prüfungen besteht.
 
+## Offene Produktentscheidung: Rätsel
+
+Nach der Einführung des zentralen `GameState` wird geprüft, ob Rätsel das Spiel
+als wiederkehrende Mechanik sinnvoll bereichern. Eine `RiddlePhase` ist noch keine
+festgelegte Zielarchitektur.
+
+Ein lokales Rätsel kann zunächst eine Story-Szene oder POI-Interaktion mit
+Bedingungen und Folgen sein. Eine eigene Phase lohnt sich erst, wenn Rätsel
+wiederholt einen eigenen Eingabeablauf, fortlaufenden Zustand, Abbruch sowie
+explizite Erfolgs- und Fehlschlagsresultate benötigen.
+
+Vor einer Implementierung werden daher zuerst die erzählerische Aufgabe und ein
+konkretes Beispielrätsel entworfen. So entscheidet der benötigte Ablauf über die
+Architektur und nicht allein der Wunsch nach einer zusätzlichen Phase.
+
 ## Bewusst nicht im ersten Vertical-Slice
 
 - Handschrift-/Runenerkennung oder Qualitätswertung
