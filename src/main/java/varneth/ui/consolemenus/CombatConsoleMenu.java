@@ -7,12 +7,12 @@ import java.util.Optional;
 import varneth.input.TextInput;
 import varneth.systems.actors.enemy.Enemy;
 import varneth.systems.spells.AvailableSpell;
-import varneth.systems.spells.SpellSource;
 import varneth.ui.enums.CombatAction;
 
 public class CombatConsoleMenu {
 
     TextInput textInput = new TextInput();
+    private final SpellConsoleMenu spellConsoleMenu = new SpellConsoleMenu();
 
     public Optional<Enemy> consoleMenuTargetChooser(List<Enemy> enemies) {
 
@@ -48,40 +48,11 @@ public class CombatConsoleMenu {
     }
 
     public Optional<AvailableSpell> consoleMenuSpellChooser(List<AvailableSpell> availableSpells){
-        int menuOption = 1;
-        System.out.println("Wähle den Zauber:");
-        for(AvailableSpell availableSpell : availableSpells){
-            System.out.println(
-                    menuOption + ".: " + availableSpell.skill().getName()
-                            + " (" + spellSourceLabel(availableSpell) + ")"
-            );
-            menuOption++;
-        }
-
-        System.out.println(menuOption + ".: Zurück");
-
-        int selection = textInput.inputVerifier(availableSpells.size() + 1);
-
-        if (menuOption == selection){
-            return Optional.empty();
-        }
-        return Optional.of(availableSpells.get(selection-1));
+        return spellConsoleMenu.chooseSpell(availableSpells);
     }
 
     String spellSourceLabel(AvailableSpell availableSpell) {
-        if (availableSpell.source() == SpellSource.ELEMENTAL) {
-            return "Ressource " + availableSpell.cost();
-        }
-        String crystalState = availableSpell.crystal().getName()
-                + " " + availableSpell.crystal().getCurrentCharge()
-                + "/" + availableSpell.crystal().getMaxCharge();
-        if (availableSpell.isPartialCast()) {
-            return crystalState
-                    + ", benötigt " + availableSpell.requiredCost()
-                    + ", Restcast " + availableSpell.effectivenessPercent()
-                    + "% – Kristall zerbricht";
-        }
-        return crystalState + ", Kosten " + availableSpell.cost();
+        return spellConsoleMenu.sourceLabel(availableSpell);
     }
 
     public CombatAction consoleMenuCombatMenu(){

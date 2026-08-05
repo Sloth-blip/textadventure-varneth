@@ -16,10 +16,36 @@ the game should continue.
 `GameState`. `GameLoop` receives that state instead of constructing a second
 world or keeping the current room as independent mutable state.
 
-`GameState` owns the player, canonical `WorldState`, stable current-room ID, and
-visited-room IDs. `getCurrentRoom()` always resolves the ID through `WorldState`.
-This preserves one mutable `Room` instance per ID and provides the first explicit
-boundary for future save data.
+`GameState` owns the player, canonical `WorldState`, stable current-room ID,
+visited-room IDs, and story-flag IDs. `getCurrentRoom()` always resolves the ID
+through `WorldState`. This preserves one mutable `Room` instance per ID and
+provides the first explicit boundary for future save data.
+
+Story flags record durable facts without putting presentation or provisional
+scene structures into the state, for example `riddle.stone_door.solved`. Their
+IDs are stable technical contracts; the first two placeholder riddles will help
+determine the later scene, dialogue, decision, and effect content model.
+
+### Riddle prototypes
+
+The first prototype attaches a provisional `RiddleDefinition` to a
+`RIDDLE` point of interest. `RiddleHandler` evaluates normalized console text
+and changes only its durable story flag. `ExplorationPhase` coordinates the
+prompt, existing reward pipeline, and POI-used state; the console menu contains
+no solving or reward rules.
+
+The second prototype separates acquired knowledge from environmental casting.
+`SpellSealHandler` checks the knowledge flag, pays the selected
+`AvailableSpell` through the existing player casting rules, validates spell ID
+and source, sets the opened flag, and connects canonical rooms. A wrong spell is
+still a real cast and therefore consumes its resource. The shared
+`SpellConsoleMenu` presents the same available-spell options in combat and
+exploration without deciding whether a spell solves the seal.
+
+Text answers and immediate spell confirmation remain console stand-ins for
+future mechanic-specific input and rune drawing. No general `RiddlePhase` or
+permanent content schema is derived yet. The comparison and open transfer
+questions are recorded in [RIDDLE-PROTOTYPES.md](RIDDLE-PROTOTYPES.md).
 
 The loop's temporary `running` flag and presentation objects are control/UI
 state and are deliberately not part of a persisted game state.

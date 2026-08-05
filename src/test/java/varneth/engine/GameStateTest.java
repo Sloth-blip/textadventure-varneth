@@ -1,5 +1,6 @@
 package varneth.engine;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -71,6 +72,55 @@ class GameStateTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> gameState.enterRoom("missing")
+        );
+    }
+
+    @Test
+    void tracksAndRestoresStoryFlagsByStableId() {
+        Player player = createPlayer();
+        var world = WorldBuilder.buildTestWorld();
+        GameState gameState = GameState.startNew(player, world);
+
+        assertFalse(gameState.hasStoryFlag("riddle.stone_door.solved"));
+        assertTrue(gameState.addStoryFlag("riddle.stone_door.solved"));
+        assertFalse(gameState.addStoryFlag("riddle.stone_door.solved"));
+        assertTrue(gameState.hasStoryFlag("riddle.stone_door.solved"));
+
+        GameState restored = new GameState(
+                player,
+                world,
+                "1",
+                Set.of("1"),
+                gameState.getStoryFlags()
+        );
+
+        assertEquals(
+                Set.of("riddle.stone_door.solved"),
+                restored.getStoryFlags()
+        );
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> restored.getStoryFlags().add("another.flag")
+        );
+    }
+
+    @Test
+    void rejectsInvalidStoryFlags() {
+        Player player = createPlayer();
+        var world = WorldBuilder.buildTestWorld();
+        GameState gameState = GameState.startNew(player, world);
+
+        assertThrows(NullPointerException.class, () -> gameState.addStoryFlag(null));
+        assertThrows(IllegalArgumentException.class, () -> gameState.addStoryFlag(" "));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new GameState(
+                        player,
+                        world,
+                        "1",
+                        Set.of(),
+                        Set.of("")
+                )
         );
     }
 

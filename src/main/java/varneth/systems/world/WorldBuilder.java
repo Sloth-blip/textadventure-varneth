@@ -10,11 +10,14 @@ import varneth.systems.interactables.PointOfInterest;
 import varneth.systems.interactables.PointOfInterestDefinition;
 import varneth.systems.interactables.PointOfInterestState;
 import varneth.systems.interactables.PointOfInterestType;
+import varneth.systems.riddles.RiddleDefinition;
+import varneth.systems.riddles.SpellSealDefinition;
 import varneth.systems.reward.Reward;
 import varneth.systems.rooms.Room;
 import varneth.systems.rooms.RoomDefinition;
 import varneth.systems.rooms.RoomState;
 import varneth.systems.spells.SpellTemplates;
+import varneth.systems.spells.SpellSource;
 
 public class WorldBuilder {
 
@@ -25,16 +28,16 @@ public class WorldBuilder {
         var book1 = new PointOfInterest(
                 new PointOfInterestDefinition(
                         "book",
-                        "Buch",
-                        PointOfInterestType.STORY,
+                        "Unbekannte Rune",
+                        PointOfInterestType.RIDDLE,
                         List.of(
                                 List.of(
-                                        "Very book",
-                                        "much knowledge",
-                                        "wow"
+                                        "[PLATZHALTER] Auf einer Buchseite glimmt eine unbekannte Rune.",
+                                        "Ihre Linien formen das Bild kleiner, beschleunigter Steine.",
+                                        "Für den Konsolentest lautet die gesuchte Zauberformel: Steinschleuder."
                                 ),
                                 List.of(
-                                        "Still very booky"
+                                        "Die Rune der Steinschleuder ist bereits in deinem Gedächtnis verankert."
                                 )
                         ),
                         new Reward(
@@ -42,8 +45,12 @@ public class WorldBuilder {
                                 List.of(EquipmentTemplates.get("earth_focus")),
                                 0,
                                 0
+                        ),
+                        new RiddleDefinition(
+                                "rune_book_pebbles",
+                                SpellTemplates.get("pebbles").getName(),
+                                "riddle.rune_book_pebbles.solved"
                         )
-
                 ),
                 new PointOfInterestState(true)
         );
@@ -83,6 +90,57 @@ public class WorldBuilder {
                 ),
                 new PointOfInterestState(true)
         );
+        var firePattern = new PointOfInterest(
+                new PointOfInterestDefinition(
+                        "fire_pattern",
+                        "Versetzte Feuersymbole",
+                        PointOfInterestType.RIDDLE,
+                        List.of(
+                                List.of(
+                                        "[PLATZHALTER] Drei Steinsegmente zeigen Asche, Glut und Flamme.",
+                                        "Eine Randnotiz verlangt die Reihenfolge vom Ende zum neuen Anfang.",
+                                        "Für den Konsolentest lautet die Lösung: Asche Glut Flamme."
+                                ),
+                                List.of(
+                                        "Du erinnerst dich: Das alte Siegel verlangt erst Asche, dann Glut, dann Flamme."
+                                )
+                        ),
+                        new Reward(0, 0),
+                        new RiddleDefinition(
+                                "fire_symbol_order",
+                                "Asche Glut Flamme",
+                                "knowledge.fire_seal.sequence"
+                        )
+                ),
+                new PointOfInterestState(true)
+        );
+        var fireSeal = new PointOfInterest(
+                new PointOfInterestDefinition(
+                        "fire_seal",
+                        "Versiegelter Durchgang",
+                        PointOfInterestType.SPELL_SEAL,
+                        List.of(
+                                List.of(
+                                        "[PLATZHALTER] Rote Linien versperren einen schmalen Durchgang.",
+                                        "Das Siegel scheint auf eine bestimmte Abfolge und Feuermagie zu warten."
+                                ),
+                                List.of(
+                                        "Die roten Linien sind erloschen. Dahinter liegt ein neuer Weg."
+                                )
+                        ),
+                        new Reward(0, 0),
+                        new SpellSealDefinition(
+                                "fire_seal_passage",
+                                "3",
+                                "4",
+                                "knowledge.fire_seal.sequence",
+                                "flamethrower",
+                                SpellSource.CRYSTAL,
+                                "world.fire_seal.opened"
+                        )
+                ),
+                new PointOfInterestState(true)
+        );
         /** Enemies **/
 
         var bat1 = EnemyTemplates.get("Fledermaus");
@@ -118,7 +176,7 @@ public class WorldBuilder {
                 new RoomState(
                         new ArrayList<>(List.of(bat1, slime)),
                         List.of(),
-                        List.of(),
+                        new ArrayList<>(List.of(firePattern)),
                         List.of(),
                         List.of("Hier geht es weiter.", "Du musst erst die Gegner besiegen.")
                 ));
@@ -134,9 +192,28 @@ public class WorldBuilder {
                 new RoomState(
                         new ArrayList<>(List.of(bat2)),
                         List.of(),
-                        new ArrayList<>(List.of(restingPlace)),
+                        new ArrayList<>(List.of(fireSeal, restingPlace)),
                         List.of(),
                         List.of("Henlo")
+                ));
+
+        var room4 = new Room(
+                new RoomDefinition(
+                        "4",
+                        "Verborgene Kammer",
+                        "Hinter dem erloschenen Feuersiegel liegt eine kleine, bislang unberührte Kammer.",
+                        2,
+                        1
+                ),
+                new RoomState(
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        new ArrayList<>(),
+                        List.of(
+                                "[PLATZHALTER] Die Luft hier ist trocken und überraschend warm.",
+                                "An den Wänden warten Spuren einer späteren Geschichte."
+                        )
                 ));
 
         /** Räume verbinden **/
@@ -145,7 +222,7 @@ public class WorldBuilder {
         room2.setConnectedRooms(new ArrayList<>(List.of(room1, room3)));
         room3.setConnectedRooms(new ArrayList<>(List.of(room2)));
 
-        return new WorldState(room1, List.of(room1, room2, room3));
+        return new WorldState(room1, List.of(room1, room2, room3, room4));
     }
 
     public static WorldState buildTestWorldTwo() {

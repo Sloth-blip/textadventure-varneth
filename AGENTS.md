@@ -25,6 +25,10 @@ source of truth for the intended journey:
 - offline autosave and story branches for combat victory, defeat, and escape
 - story-unlocked spells that level up and are cast through a free-drawn rune
 
+Read [`Docs/CONTENT-AUTHORING.md`](Docs/CONTENT-AUTHORING.md) before writing or
+transferring story, scene, dialogue, quest, or riddle content. It defines the
+current handoff between Notion and the executable repository copy.
+
 Keep current and target architecture distinct. The repository currently uses
 Java 17 and is not yet a LibGDX multi-module project. LibGDX, the `core` /
 `lwjgl3` split, and Android are roadmap targets, not current repository facts.
@@ -124,6 +128,16 @@ pair programmer, not as a silent implementation service:
 - Update the corresponding Markdown document when an architectural contract or
   subsystem responsibility changes.
 
+## Container editing caveat
+
+In this Docker workspace, the `apply_patch` helper may fail before reading a
+patch because Bubblewrap cannot create an unprivileged namespace. After that
+exact `bwrap` error, do not retry the helper repeatedly. Use GNU `patch` with a
+standard unified diff instead; `*** Begin Patch` / `*** End Patch` markers belong
+only to the helper and are invalid input for GNU `patch`. After the fallback,
+check for generated `*.orig` and `*.rej` files, remove only artifacts created by
+the current edit, and run `git diff --check`.
+
 ## Documentation caveat
 
 `Docs/` contains useful design intent, but some examples and class names lag behind
@@ -133,6 +147,7 @@ when the task touches that area. Start with:
 
 - `Docs/README.md`
 - `Docs/PRODUCT-ROADMAP.md`
+- `Docs/CONTENT-AUTHORING.md`
 - `Docs/ARCHITECTURE.md`
 - `Docs/Frontend-Architecture.md`
 - `Docs/WorldState.md`

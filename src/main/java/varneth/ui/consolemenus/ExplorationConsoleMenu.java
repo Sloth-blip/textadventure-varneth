@@ -7,7 +7,11 @@ import java.util.Optional;
 import varneth.input.TextInput;
 import varneth.systems.actors.player.Player;
 import varneth.systems.interactables.PointOfInterest;
+import varneth.systems.riddles.RiddleAttemptResult;
+import varneth.systems.riddles.SpellSealResult;
 import varneth.systems.rooms.Room;
+import varneth.systems.spells.AvailableSpell;
+import varneth.systems.spells.SpellSource;
 import varneth.ui.enums.ExplorationAction;
 
 public class ExplorationConsoleMenu {
@@ -123,6 +127,75 @@ public class ExplorationConsoleMenu {
                 TextInput.scanner.nextLine();
             }
         }
+    }
+
+    public Optional<String> consoleMenuReadRiddleAnswer() {
+        System.out.println(
+                "Gib deine Lösung ein. Leer lassen bricht den Versuch ab:"
+        );
+        return textInput.readText();
+    }
+
+    public void consoleMenuDisplayRiddleResult(RiddleAttemptResult result) {
+        switch (result) {
+            case SOLVED -> System.out.println(
+                    "Die Struktur fügt sich zusammen. Du hast das Muster verstanden."
+            );
+            case INCORRECT -> System.out.println(
+                    "Die Struktur reagiert nicht. Diese Lösung passt nicht zum Muster."
+            );
+            case CANCELLED -> System.out.println(
+                    "Du lässt das ungelöste Muster vorerst zurück."
+            );
+            case ALREADY_SOLVED -> System.out.println(
+                    "Du hast dieses Muster bereits entschlüsselt."
+            );
+        }
+    }
+
+    public void consoleMenuDisplaySpellSealResult(SpellSealResult result) {
+        switch (result) {
+            case READY -> {}
+            case MISSING_KNOWLEDGE -> System.out.println(
+                    "Die Zeichen bleiben unverständlich. Dir fehlt Wissen über ihre Reihenfolge."
+            );
+            case NO_AVAILABLE_SPELLS -> System.out.println(
+                    "Du verstehst das Siegel, kannst aber gerade keinen passenden Zauber wirken."
+            );
+            case CANCELLED -> System.out.println(
+                    "Du lässt das Siegel vorerst unberührt."
+            );
+            case CAST_FAILED -> System.out.println(
+                    "Der Zauber lässt sich nicht vollständig auslösen."
+            );
+            case WRONG_SPELL -> System.out.println(
+                    "Der gewirkte Zauber trifft das Siegel, doch die roten Linien weisen ihn zurück."
+            );
+            case OPENED -> System.out.println(
+                    "Der Feuerstrom folgt der entschlüsselten Sequenz. Das Siegel erlischt."
+            );
+            case ALREADY_OPENED -> System.out.println(
+                    "Das Feuersiegel ist bereits erloschen."
+            );
+        }
+    }
+
+    public void consoleMenuDisplayCastingState(
+            Player player,
+            AvailableSpell selectedSpell
+    ) {
+        if (selectedSpell.source() == SpellSource.CRYSTAL) {
+            System.out.println(
+                    selectedSpell.crystal().getName() + ": "
+                            + selectedSpell.crystal().getCurrentCharge() + "/"
+                            + selectedSpell.crystal().getMaxCharge() + " Ladung"
+            );
+            return;
+        }
+        System.out.println(
+                player.getName() + " Ressource: " + player.getCurrentResource()
+                        + "/" + player.getMaxResource()
+        );
     }
 
     public void explorationMenuTakeRest(Player player) {

@@ -74,8 +74,11 @@ src/main/java/varneth/
 
 Docs/
 ├── ARCHITECTURE.md
-├── Frontend-Architecture.md
 ├── CombatScene.md
+├── CONTENT-AUTHORING.md
+├── Frontend-Architecture.md
+├── PRODUCT-ROADMAP.md
+├── RIDDLE-PROTOTYPES.md
 ├── UI-LOGIC.md
 └── WorldState.md
 ```

@@ -193,6 +193,20 @@ Vor einer Implementierung werden daher zuerst die erzählerische Aufgabe und ein
 konkretes Beispielrätsel entworfen. So entscheidet der benötigte Ablauf über die
 Architektur und nicht allein der Wunsch nach einer zusätzlichen Phase.
 
+Die ersten zwei Rätsel wurden mit klar gekennzeichneten Platzhaltertexten als
+Lern-Prototypen umgesetzt. Dauerhafte Ergebnisse werden bereits über stabile
+Story-Flags im `GameState` festgehalten; das spätere JSON-Format für Szenen und
+Dialoge wird daraus noch nicht automatisch abgeleitet. Ablauf, Unterschiede und
+offene Fragen stehen in [RIDDLE-PROTOTYPES.md](RIDDLE-PROTOTYPES.md).
+
+Die erste Autoren- und Übergabestruktur für Notion ist in
+[CONTENT-AUTHORING.md](CONTENT-AUTHORING.md) festgehalten. Sie beschreibt Szenen,
+Dialoge, Entscheidungen, Bedingungen, Effekte und Übergänge zunächst semantisch,
+ohne bereits ein endgültiges JSON-Schema vorzugeben. Nach der Übertragung eines
+echten Spieleinstiegs wird sie anhand der tatsächlichen Reibungspunkte
+feinjustiert. Erst danach werden das verbindliche Content-Modell und die Frage
+nach einer eigenen `RiddlePhase` entschieden.
+
 ## Bewusst nicht im ersten Vertical-Slice
 
 - Handschrift-/Runenerkennung oder Qualitätswertung

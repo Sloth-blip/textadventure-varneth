@@ -1,6 +1,7 @@
 package varneth.systems.rooms;
 
 import java.util.List;
+import java.util.Objects;
 
 import varneth.systems.actors.enemy.Enemy;
 import varneth.systems.actors.npc.NPC;
@@ -54,6 +55,21 @@ public class Room {
         if(!pOI.isPersistent()){
             state.getPOIs().remove(pOI);
         }
+    }
+
+    public boolean connectTo(Room room) {
+        Objects.requireNonNull(room);
+        if (getRoomId().equals(room.getRoomId())) {
+            throw new IllegalArgumentException("A room cannot connect to itself");
+        }
+        boolean alreadyConnected = getConnectedRooms().stream()
+                .anyMatch(connected -> connected.getRoomId().equals(room.getRoomId()));
+        if (alreadyConnected) {
+            return false;
+        }
+
+        getConnectedRooms().add(room);
+        return true;
     }
 
 }

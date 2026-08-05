@@ -65,7 +65,7 @@ public class GameLoop {
                         }
                     }
                 }
-                case INTERACTABLES -> eP.playInteractableDialog(currentRoom, player);
+                case INTERACTABLES -> eP.playInteractableDialog(currentRoom, gameState);
                 case ROOMDESCRIPTION -> eP.replayRoomDialog(currentRoom.getRoomDialogChunks());
                 case ROOMNAVIGATION -> {
                     Optional<Room> maybeNextRoom = eP.chooseNextRoom(currentRoom);

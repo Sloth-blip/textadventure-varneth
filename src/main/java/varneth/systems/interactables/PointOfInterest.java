@@ -1,7 +1,10 @@
 package varneth.systems.interactables;
 
 import java.util.List;
+import java.util.Optional;
 
+import varneth.systems.riddles.RiddleDefinition;
+import varneth.systems.riddles.SpellSealDefinition;
 import varneth.systems.reward.Reward;
 
 public class PointOfInterest {
@@ -26,6 +29,8 @@ public class PointOfInterest {
     public List<List<String>> getDialogsChunks() {return def.getDialogsChunks();}
     public List<String> getDialogChunks() {return def.getDialogChunk(isUsed());}
     public Reward getRewards() {return def.getRewards();}
+    public Optional<RiddleDefinition> getRiddle() {return def.getRiddle();}
+    public Optional<SpellSealDefinition> getSpellSeal() {return def.getSpellSeal();}
 
     /** Getter - State **/
 
