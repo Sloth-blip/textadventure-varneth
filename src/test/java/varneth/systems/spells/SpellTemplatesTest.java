@@ -17,7 +17,8 @@ class SpellTemplatesTest {
                 () -> assertEquals(
                         "Ein einfacher Erdzauber, der lose Steine weckt und mit arkaner Kraft auf sein Ziel schleudert.",
                         pebbles.getDescription()
-                )
+                ),
+                () -> assertEquals(5, pebbles.getXpPerCast())
         );
     }
 }

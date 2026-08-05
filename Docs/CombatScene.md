@@ -22,8 +22,10 @@ input coupling is temporary and can be replaced when a non-blocking UI is introd
 
 - the combat flow (round logic)
 - damage calculation (via `Player` / `Enemy`)
+- applying the frozen cast effectiveness and publishing crystal-shatter events
 - death checks (`Player` / `Enemy`)
 - triggering rewards
+- recording progression after a successful learned-spell cast
 - returning a `CombatResult`
 
 ### CombatScene is not responsible for:

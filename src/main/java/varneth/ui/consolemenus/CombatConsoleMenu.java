@@ -68,14 +68,20 @@ public class CombatConsoleMenu {
         return Optional.of(availableSpells.get(selection-1));
     }
 
-    private String spellSourceLabel(AvailableSpell availableSpell) {
+    String spellSourceLabel(AvailableSpell availableSpell) {
         if (availableSpell.source() == SpellSource.ELEMENTAL) {
             return "Ressource " + availableSpell.cost();
         }
-        return availableSpell.crystal().getName()
+        String crystalState = availableSpell.crystal().getName()
                 + " " + availableSpell.crystal().getCurrentCharge()
-                + "/" + availableSpell.crystal().getMaxCharge()
-                + ", Kosten " + availableSpell.cost();
+                + "/" + availableSpell.crystal().getMaxCharge();
+        if (availableSpell.isPartialCast()) {
+            return crystalState
+                    + ", benötigt " + availableSpell.requiredCost()
+                    + ", Restcast " + availableSpell.effectivenessPercent()
+                    + "% – Kristall zerbricht";
+        }
+        return crystalState + ", Kosten " + availableSpell.cost();
     }
 
     public CombatAction consoleMenuCombatMenu(){

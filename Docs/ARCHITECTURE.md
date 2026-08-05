@@ -57,3 +57,43 @@ immutable `RewardGranted` event describing the values actually granted,
 including aggregated level-ups. It contains no presentation code.
 `RewardConsoleNarrator` turns that event into console text. Other presentation
 layers can subscribe without duplicating reward rules.
+
+## Skill progression
+
+`xpPerCast` is stable spell content and is independent from mana or crystal
+cost. A learned elemental spell keeps its `SkillState` and gains that XP only
+after a cast has successfully paid its cost and resolved its effect. The cast
+therefore uses the spell level it had before receiving XP.
+
+`SkillProgressionHandler` ignores crystal-provided spells because those are
+temporary derived options rather than learned persistent skills. For elemental
+spells it updates the skill and publishes an immutable `SkillProgressed`
+snapshot. `SkillProgressConsoleNarrator` renders the progress and level-up.
+
+## Crystal casting efficiency
+
+Wisdom normally changes crystal charge cost, not spell damage. The effective
+cost is `max(1, ceil(baseCost * BASELINE_WISDOM / max(1, wisdom)))`, with a baseline
+Wisdom of `10`. Wisdom below the baseline can make a spell cost more than its
+base value; higher Wisdom lowers the integer charge cost.
+
+The calculated value is stored in the derived `AvailableSpell`. The menu,
+availability check, and payment therefore use the same cost. Elemental spells
+continue to use their unchanged base cost from the player's personal resource.
+A future Ur-magic inefficiency is a separate source modifier applied before
+the Wisdom calculation.
+
+A compatible crystal with positive charge can also offer a partial cast when
+its remaining charge is below the effective cost. `AvailableSpell` freezes the
+required cost, actual payment, selected crystal, and whether that crystal will
+break. This keeps menu text, payment, and combat resolution on one calculation.
+
+Partial damage is `round(fullDamage * payment / requiredCost)` and remains at
+least one for a normally positive hit. The cast consumes all remaining charge
+and removes the shattered crystal from inventory. Paying the exact required
+amount is still a full cast: a crystal reduced exactly to zero remains in the
+inventory so a later recharge system can reuse it.
+
+When several crystals provide the same spell, selection prefers a crystal that
+can pay the full cost. If all candidates are partial, it uses the crystal with
+the highest remaining usable charge.

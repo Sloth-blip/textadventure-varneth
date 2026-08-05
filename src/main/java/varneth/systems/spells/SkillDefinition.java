@@ -14,6 +14,7 @@ public class SkillDefinition {
     private final int modifierPerLevel;
     private final int baseXpThreshold;
     private final int xpThresholdExponent;
+    private final int xpPerCast;
     private final MainAttribute modifyingAttribute;
 
     @Override
@@ -28,6 +29,7 @@ public class SkillDefinition {
             int baseModifier, int modifierPerLevel,
             int baseXpThreshold,
             int xpThresholdExponent,
+            int xpPerCast,
             MainAttribute modifyingAttribute
     )
     {
@@ -40,6 +42,7 @@ public class SkillDefinition {
         this.modifierPerLevel = modifierPerLevel;
         this.baseXpThreshold = baseXpThreshold;
         this.xpThresholdExponent = xpThresholdExponent;
+        this.xpPerCast = xpPerCast;
         this.modifyingAttribute = modifyingAttribute;
     }
 
@@ -54,6 +57,7 @@ public class SkillDefinition {
     public int getModifierPerLevel() {return modifierPerLevel;}
     public int getBaseXpThreshold() {return baseXpThreshold;}
     public int getXpThresholdExponent() {return xpThresholdExponent;}
+    public int getXpPerCast() {return xpPerCast;}
     public MainAttribute getModifyingAttribute() {return modifyingAttribute;}
 
 }

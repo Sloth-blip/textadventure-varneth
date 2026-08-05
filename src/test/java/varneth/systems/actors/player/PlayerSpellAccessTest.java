@@ -1,6 +1,7 @@
 package varneth.systems.actors.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,7 +53,66 @@ class PlayerSpellAccessTest {
 
         assertTrue(player.tryPayCastingCost(flamethrower));
         assertEquals(0, crystal.getCurrentCharge());
+        assertTrue(player.getInventory().contains(crystal));
         assertTrue(player.getAvailableSpells().isEmpty());
+    }
+
+    @Test
+    void partialCrystalCastScalesDamageAndDestroysCrystal() {
+        Player player = createPlayer(25);
+        MagicCrystal crystal = MagicCrystalTemplates.get("fire_crystal");
+        assertTrue(crystal.consumeCharge(6));
+        player.addItem(crystal);
+
+        AvailableSpell partialCast = player.getAvailableSpells().get(0);
+
+        assertTrue(partialCast.isPartialCast());
+        assertTrue(partialCast.crystalBreaks());
+        assertEquals(5, partialCast.requiredCost());
+        assertEquals(4, partialCast.paymentAmount());
+        assertEquals(80, partialCast.effectivenessPercent());
+        assertEquals(26, partialCast.scaleDamage(32));
+        assertEquals(1, partialCast.scaleDamage(1));
+
+        assertTrue(player.tryPayCastingCost(partialCast));
+
+        assertEquals(0, crystal.getCurrentCharge());
+        assertTrue(player.getInventory().isEmpty());
+    }
+
+    @Test
+    void fullCrystalIsPreferredOverEarlierPartialCrystal() {
+        Player player = createPlayer(25);
+        MagicCrystal partialCrystal = MagicCrystalTemplates.get("fire_crystal");
+        MagicCrystal fullCrystal = MagicCrystalTemplates.get("fire_crystal");
+        assertTrue(partialCrystal.consumeCharge(6));
+        player.addItem(partialCrystal);
+        player.addItem(fullCrystal);
+
+        AvailableSpell selectedCast = player.getAvailableSpells().get(0);
+
+        assertSame(fullCrystal, selectedCast.crystal());
+        assertFalse(selectedCast.isPartialCast());
+        assertTrue(player.tryPayCastingCost(selectedCast));
+        assertEquals(5, fullCrystal.getCurrentCharge());
+        assertEquals(4, partialCrystal.getCurrentCharge());
+    }
+
+    @Test
+    void highestRemainingChargeIsPreferredWhenOnlyPartialCastsExist() {
+        Player player = createPlayer(25);
+        MagicCrystal lowerCharge = MagicCrystalTemplates.get("fire_crystal");
+        MagicCrystal higherCharge = MagicCrystalTemplates.get("fire_crystal");
+        assertTrue(lowerCharge.consumeCharge(8));
+        assertTrue(higherCharge.consumeCharge(6));
+        player.addItem(lowerCharge);
+        player.addItem(higherCharge);
+
+        AvailableSpell selectedCast = player.getAvailableSpells().get(0);
+
+        assertSame(higherCharge, selectedCast.crystal());
+        assertTrue(selectedCast.isPartialCast());
+        assertEquals(4, selectedCast.paymentAmount());
     }
 
     @Test
@@ -73,6 +133,58 @@ class PlayerSpellAccessTest {
     }
 
     @Test
+    void levelAdjustedWisdomRecalculatesCrystalCostBetweenCasts() {
+        Player player = createPlayer(25);
+        MagicCrystal crystal = MagicCrystalTemplates.get("fire_crystal");
+        player.addItem(crystal);
+
+        AvailableSpell firstCast = player.getAvailableSpells().get(0);
+        assertEquals(11, player.getWisdom());
+        assertEquals(5, firstCast.cost());
+        assertTrue(player.tryPayCastingCost(firstCast));
+        assertEquals(5, crystal.getCurrentCharge());
+
+        player.levelUp();
+        player.levelUp();
+        player.levelUp();
+        player.levelUp();
+
+        AvailableSpell secondCast = player.getAvailableSpells().get(0);
+        assertEquals(15, player.getWisdom());
+        assertEquals(4, secondCast.cost());
+        assertTrue(player.tryPayCastingCost(secondCast));
+        assertEquals(1, crystal.getCurrentCharge());
+        assertEquals(player.getMaxResource(), player.getCurrentResource());
+    }
+
+    @Test
+    void wisdomReducesCrystalCostButNotElementalResourceCost() {
+        Player player = createPlayer(25, 20, 0);
+        MagicCrystal crystal = MagicCrystalTemplates.get("fire_crystal");
+        player.addItem(crystal);
+        player.addLearnedSkill(SpellTemplates.get("pebbles"));
+
+        AvailableSpell elementalSpell = player.getAvailableSpells().stream()
+                .filter(option -> option.source() == SpellSource.ELEMENTAL)
+                .findFirst()
+                .orElseThrow();
+        AvailableSpell crystalSpell = player.getAvailableSpells().stream()
+                .filter(option -> option.source() == SpellSource.CRYSTAL)
+                .findFirst()
+                .orElseThrow();
+
+        assertEquals(5, elementalSpell.cost());
+        assertEquals(3, crystalSpell.cost());
+        assertTrue(player.tryPayCastingCost(crystalSpell));
+        assertEquals(7, crystal.getCurrentCharge());
+        assertEquals(25, player.getCurrentResource());
+
+        assertTrue(player.tryPayCastingCost(elementalSpell));
+        assertEquals(7, crystal.getCurrentCharge());
+        assertEquals(20, player.getCurrentResource());
+    }
+
+    @Test
     void elementalSpellIsUnavailableWithoutEnoughPlayerResource() {
         Player player = createPlayer(4);
         player.addLearnedSkill(SpellTemplates.get("pebbles"));
@@ -81,13 +193,17 @@ class PlayerSpellAccessTest {
     }
 
     private Player createPlayer(int currentResource) {
+        return createPlayer(currentResource, 10, 1);
+    }
+
+    private Player createPlayer(int currentResource, int baseWisdom, int wisdomPerLevel) {
         ActorDefinition definition = new ActorDefinition(
                 "Arenn",
                 40, 10,
                 20, 5,
                 10, 2,
                 15, 5,
-                10, 1,
+                baseWisdom, wisdomPerLevel,
                 10, 2,
                 MainAttribute.INTELLIGENCE
         );

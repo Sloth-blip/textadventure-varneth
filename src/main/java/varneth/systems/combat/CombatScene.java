@@ -7,6 +7,7 @@ import java.util.Optional;
 import varneth.engine.events.CombatantSnapshot;
 import varneth.engine.events.CombatSnapshot;
 import varneth.engine.events.CombatStateChanged;
+import varneth.engine.events.CrystalShattered;
 import varneth.engine.events.DamageDealt;
 import varneth.engine.events.EventBus;
 import varneth.systems.actors.Actor;
@@ -15,6 +16,7 @@ import varneth.systems.actors.player.Player;
 import varneth.systems.reward.RewardHandler;
 import varneth.systems.spells.AvailableSpell;
 import varneth.systems.spells.Skill;
+import varneth.systems.spells.SkillProgressionHandler;
 import varneth.ui.consolemenus.CombatConsoleMenu;
 import varneth.ui.enums.CombatAction;
 
@@ -44,6 +46,7 @@ public class CombatScene {
         CombatConsoleMenu combatMenu = new CombatConsoleMenu();
         publishCombatState(player, enemies);
         RewardHandler rewardHandler = new RewardHandler(bus);
+        SkillProgressionHandler skillProgressionHandler = new SkillProgressionHandler(bus);
 
         while (true){
 
@@ -87,10 +90,18 @@ public class CombatScene {
                         continue;
                     }
                     Enemy target = maybeTarget.get();
-                    int dmg = player.calculateDamageDealtWithSkill(spell);
+                    int fullDamage = player.calculateDamageDealtWithSkill(spell);
+                    int dmg = availableSpell.scaleDamage(fullDamage);
                     int hpBefore = target.getCurrentHp();
                     target.recieveDamage(dmg);
                     bus.publish(new DamageDealt(player, target, dmg, spell, hpBefore, target.getCurrentHp()));
+                    if (availableSpell.crystalBreaks()) {
+                        bus.publish(new CrystalShattered(
+                                player.getName(),
+                                availableSpell.crystal().getName()
+                        ));
+                    }
+                    skillProgressionHandler.recordSuccessfulCast(availableSpell);
                     if(target.isDead()){
                         rewardHandler.grantRewards(rewardHandler.getRewardsFromEnemy(target), player);
                     }

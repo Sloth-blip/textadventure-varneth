@@ -7,7 +7,9 @@ import java.util.Optional;
 
 import varneth.engine.events.EventBus;
 import varneth.renderer.CombatConsoleNarrator;
+import varneth.renderer.CrystalConsoleNarrator;
 import varneth.renderer.RewardConsoleNarrator;
+import varneth.renderer.SkillProgressConsoleNarrator;
 import varneth.systems.actors.player.Player;
 import varneth.systems.combat.CombatScene;
 import varneth.systems.rooms.ExplorationPhase;
@@ -25,7 +27,9 @@ public class GameLoop {
         ConsoleMenuGeneral userInterface = new ConsoleMenuGeneral();
         EventBus bus = new EventBus();
         new CombatConsoleNarrator(bus);
+        new CrystalConsoleNarrator(bus);
         new RewardConsoleNarrator(bus);
+        new SkillProgressConsoleNarrator(bus);
 
 
         var cS = new CombatScene(bus);

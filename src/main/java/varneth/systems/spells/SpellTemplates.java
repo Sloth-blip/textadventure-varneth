@@ -19,6 +19,7 @@ public class SpellTemplates {
                     2,
                     10,
                     2,
+                    5,
                     MainAttribute.INTELLIGENCE
             );
 
@@ -33,6 +34,7 @@ public class SpellTemplates {
                     2,
                     10,
                     2,
+                    5,
                     MainAttribute.INTELLIGENCE
             );
 

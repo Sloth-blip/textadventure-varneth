@@ -31,6 +31,7 @@ public class PlayerState extends ActorState {
     protected List<Item> getInventory() {return inventory;}
     protected int getGold() {return gold;}
     protected void addItem(Item item) {inventory.add(item);}
+    protected boolean removeItem(Item item) {return inventory.remove(item);}
 
     protected void addGold(int amount) {
         if (amount < 0) {

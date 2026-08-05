@@ -25,6 +25,7 @@ public class Skill {
     public String getDescription() {return def.getDescription();}
     public MagicType getMagicType() {return def.getMagicType();}
     public int getBaseManaCost() {return def.getBaseManaCost();}
+    public int getXpPerCast() {return def.getXpPerCast();}
     public int getModifier() {return def.getBaseModifier() + def.getModifierPerLevel() * state.getLevel();}
     public int getCurrentXp() {return state.getCurrentXp();}
     public int getLevel() {return state.getLevel();}
@@ -39,14 +40,20 @@ public class Skill {
 
     /** Level-Up Logic **/
 
-    public void addCurrentXp(int amount) {
+    public int addCurrentXp(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Skill XP amount must not be negative");
+        }
         int newXp = getCurrentXp() + amount;
         state.setCurrentXp(newXp);
+        int levelsGained = 0;
         while (getCurrentXp() >= getCurrentXpThreshold()) {
             state.setCurrentXp(getCurrentXp() - getCurrentXpThreshold());
             levelUp();
-            }
+            levelsGained++;
         }
+        return levelsGained;
+    }
 
     public void levelUp() {state.levelUp();}
 
