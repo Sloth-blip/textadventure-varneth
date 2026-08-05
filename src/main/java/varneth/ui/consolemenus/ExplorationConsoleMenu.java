@@ -54,6 +54,11 @@ public class ExplorationConsoleMenu {
             actions.add(ExplorationAction.ROOMNAVIGATION);
             menuOption++;
         }
+
+        System.out.println(menuOption + ".: " + ExplorationAction.INVENTORY);
+        actions.add(ExplorationAction.INVENTORY);
+        menuOption++;
+
         System.out.println(menuOption + ".: " + ExplorationAction.MAINMENU);
         actions.add(ExplorationAction.MAINMENU);
         menuOption++;

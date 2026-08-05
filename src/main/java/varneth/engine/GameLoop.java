@@ -8,6 +8,7 @@ import java.util.Optional;
 import varneth.engine.events.EventBus;
 import varneth.renderer.CombatConsoleNarrator;
 import varneth.renderer.CrystalConsoleNarrator;
+import varneth.renderer.InventoryConsoleRenderer;
 import varneth.renderer.RewardConsoleNarrator;
 import varneth.renderer.SkillProgressConsoleNarrator;
 import varneth.systems.actors.player.Player;
@@ -30,6 +31,7 @@ public class GameLoop {
         new CrystalConsoleNarrator(bus);
         new RewardConsoleNarrator(bus);
         new SkillProgressConsoleNarrator(bus);
+        InventoryConsoleRenderer inventoryRenderer = new InventoryConsoleRenderer();
 
 
         var cS = new CombatScene(bus);
@@ -66,6 +68,7 @@ public class GameLoop {
                         currentRoom = maybeNextRoom.get();
                     }
                 }
+                case INVENTORY -> inventoryRenderer.render(player);
                 case MAINMENU -> {
                     MainMenuAction mainMenuChoice = userInterface.consoleMenuMainMenu();
                     switch (mainMenuChoice){

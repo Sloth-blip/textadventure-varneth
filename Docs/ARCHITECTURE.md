@@ -34,6 +34,17 @@ The first inventory slice follows the same split:
 `AvailableSpell` is derived from learned spells, current player resource, and
 usable inventory crystals. It is a transient combat option and is not persistent state.
 
+## Inventory presentation boundary
+
+`ExplorationAction.INVENTORY` is a read-only request handled by `GameLoop`.
+`InventoryConsoleRenderer` reads the player's gold and inventory and renders generic
+item identity and lore. Type-specific display details such as a crystal's magic
+type and current charge remain presentation concerns; the renderer does not
+consume, remove, equip, or otherwise mutate items.
+
+A later graphical inventory replaces this renderer while continuing to use the
+authoritative item instances and state from the game core.
+
 ## Combat presentation boundary
 
 `CombatScene` resolves game rules and publishes an immutable `CombatStateChanged`

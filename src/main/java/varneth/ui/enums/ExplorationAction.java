@@ -5,6 +5,7 @@ public enum ExplorationAction {
     INTERACTABLES("Interagieren"),
     ROOMDESCRIPTION("RaumIntro"),
     ROOMNAVIGATION("Raumnavigation"),
+    INVENTORY("Inventar"),
     MAINMENU("Hauptmenü");
 
     public final String displayName;
